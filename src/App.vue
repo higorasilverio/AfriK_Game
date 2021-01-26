@@ -29,25 +29,26 @@ body {
 
 main {
   text-align: center;
-  margin-top: 40px;
 }
 
 header {
-  margin: 0;
-  height: 56px;
-  padding: 0 16px 0 24px;
-  background-color: #35495E;
-  color: #ffffff;
+  height: 7vh;
+  background: rgb(10,10,255);
+  background: linear-gradient(90deg, rgba(10,10,255,1) 5%, rgba(170,170,255,1) 30%, rgba(170,170,255,1) 70%, rgba(10,10,255,1) 95%);
+  border-bottom: 3px solid rgba(170,170,255,1);
+  color: rgb(10,10,255);
+  text-align: center;
 }
 
 header span {
   display: block;
   position: relative;
-  font-size: 20px;
+  font-size: 2rem;
   line-height: 1;
   letter-spacing: .02em;
   font-weight: 400;
   box-sizing: border-box;
   padding-top: 16px;
+  font-weight: 600;
 }
 </style>
