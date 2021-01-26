@@ -21,8 +21,9 @@ export default {
 <style>
 h2 {
   font-weight: 600;
-  font-size: 2em;
-  color: rgb(10,10,255);
+  font-size: 1.8em;
+  color: #fff;
+  text-shadow: 2px 2px #555;
   margin: 0;
   padding: 0;
 }
@@ -38,15 +39,21 @@ li {
 }
 
 img {
-  width: 30%;
+  width: 20vh;
   margin: 0 auto;
 }
 
 button {
-  width: 50%;
+  width: 160px;
   height: 5vh;
-  color: rgb(10,10,255);
-  font-size: 1.5rem;
+  color: #fff;
+  border-radius: 10px;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  box-shadow: 1px 1px 10px #555;
+  text-shadow: 1px 1px #555;
+  border-color: #fff;
+  font-size: 1.4em;
   font-weight: 600;
   margin: 0 auto;
 }
@@ -55,7 +62,7 @@ button {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  height: 75%;
+  height: 80vh;
   background: rgb(10,10,255);
   background: linear-gradient(90deg, rgba(10,10,255,1) 5%, rgba(170,170,255,1) 30%, rgba(170,170,255,1) 70%, rgba(10,10,255,1) 95%);
 }

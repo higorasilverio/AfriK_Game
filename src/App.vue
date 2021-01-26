@@ -43,12 +43,14 @@ header {
 header span {
   display: block;
   position: relative;
-  font-size: 2rem;
+  font-size: 2.2rem;
   line-height: 1;
   letter-spacing: .02em;
   font-weight: 400;
   box-sizing: border-box;
   padding-top: 16px;
   font-weight: 600;
+  color: #fff;
+  text-shadow: 1px 1px #555;
 }
 </style>
