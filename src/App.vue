@@ -1,11 +1,22 @@
 <template>
   <div id="app">
     <header>
-      <span>AfriK</span>
+      <b-card bg-variant="dark" text-variant="white" title="AfriK">
+        <b-card-text>
+          Are you ready to play?
+        </b-card-text>
+      </b-card>
     </header>
     <main>
       <router-view></router-view>
     </main>
+    <footer>
+      <b-card bg-variant="white" text-variant="dark" style="padding: 0 !important;">
+        <b-card-text>
+          Developed by higorasilverio
+        </b-card-text>
+      </b-card>
+    </footer>
   </div>
 </template>
 
@@ -17,40 +28,22 @@ export default {
 
 <style>
 body {
-  margin: 0;
+  background-image: url("assets/things_02.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #cccccc;
 }
 
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
+footer {
+  position: absolute;
+  background-color: #fff;
+  width: 100%;
+  bottom: 0;
+  border-radius: 10px;
 }
 
-main {
-  text-align: center;
-}
-
-header {
-  height: 7vh;
-  background: rgb(10,10,255);
-  background: linear-gradient(90deg, rgba(10,10,255,1) 5%, rgba(170,170,255,1) 30%, rgba(170,170,255,1) 70%, rgba(10,10,255,1) 95%);
-  border-bottom: 3px solid rgba(170,170,255,1);
-  color: rgb(10,10,255);
-  text-align: center;
-}
-
-header span {
-  display: block;
-  position: relative;
-  font-size: 2.2rem;
-  line-height: 1;
-  letter-spacing: .02em;
-  font-weight: 400;
-  box-sizing: border-box;
-  padding-top: 16px;
-  font-weight: 600;
-  color: #fff;
-  text-shadow: 1px 1px #555;
+footer .card-body {
+  padding: 2%;
+  border-radius: 10px;
 }
 </style>
