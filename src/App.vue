@@ -1,14 +1,14 @@
 <template>
   <div id="app">
     <header>
-      <h3>Afrik</h3>
-      <h5>Are you ready to play?</h5>
+      <h3>AfriK</h3>
+      <h6>Are you ready to be creative?</h6>
     </header>
     <main>
       <router-view></router-view>
     </main>
     <footer>
-      <span>Developed by higorasilverio</span>
+      <span>Developed by higorasilverio</span><span><b-icon icon="suit-club-fill"/></span>
     </footer>
   </div>
 </template>
@@ -29,7 +29,7 @@ body {
   height: 100%;
 }
 
-header {
+#app header {
   position: absolute;
   top: 0;
   height: 13vh;
@@ -41,9 +41,10 @@ header {
   width: 98%;
   margin: 1vh 1%;
   padding: 1vh 3vh;
+  overflow: hidden;
 }
 
-main {
+#app main {
   position: absolute;
   height: 77vh;
   top: 14vh;
@@ -55,7 +56,7 @@ main {
   width: 90%;
 }
 
-footer {
+#app footer {
   position: absolute;
   background-color: #fff;
   bottom: 0;
@@ -65,6 +66,14 @@ footer {
   width: 98%;
   margin: 1vh 1%;
   padding: 1vh 3vh;
+  display: flex;
+  flex: row;
+  justify-content: space-between;
 }
 
+#app h3, #app h6{
+  margin: 0;
+  padding: 0;
+  padding-bottom: 1vh;
+}
 </style>
