@@ -1,12 +1,12 @@
 <template>
-  <div class="play">
-    <span>Play</span>
+  <div class="players">
+    <span>Players</span>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'play',
+  name: 'players',
   data () {
     return {
       msg: 'Welcome to Your Vue.js PWA'

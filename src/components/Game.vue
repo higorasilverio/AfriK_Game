@@ -1,16 +1,12 @@
 <template>
-  <div class="hello">
-    <play></play>
+  <div class="players">
+    <span>Game</span>
   </div>
 </template>
 
 <script>
-import play from '@/components/Play'
 export default {
-  name: 'hello',
-  components: {
-    play
-  },
+  name: 'Game',
   data () {
     return {
       msg: 'Welcome to Your Vue.js PWA'

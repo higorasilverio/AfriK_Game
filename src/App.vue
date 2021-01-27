@@ -35,10 +35,12 @@ header {
   height: 13vh;
   background-color: #000;
   color: #fff;
-  border-radius: 5vh;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
   width: 98%;
   margin: 1vh 1%;
-  padding: 1vh 5vh;
+  padding: 1vh 3vh;
 }
 
 main {
@@ -46,7 +48,9 @@ main {
   height: 77vh;
   top: 14vh;
   background-color: rgba(255, 255, 255, 0.95);
-  border-radius: 2vh;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
   margin: 1vh 5%;
   width: 90%;
 }
@@ -55,10 +59,12 @@ footer {
   position: absolute;
   background-color: #fff;
   bottom: 0;
-  border-radius: 5vh;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
   width: 98%;
   margin: 1vh 1%;
-  padding: 1vh 5vh;
+  padding: 1vh 3vh;
 }
 
 </style>
