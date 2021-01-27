@@ -1,21 +1,14 @@
 <template>
   <div id="app">
     <header>
-      <b-card bg-variant="dark" text-variant="white" title="AfriK">
-        <b-card-text>
-          Are you ready to play?
-        </b-card-text>
-      </b-card>
+      <h3>Afrik</h3>
+      <h5>Are you ready to play?</h5>
     </header>
     <main>
       <router-view></router-view>
     </main>
     <footer>
-      <b-card bg-variant="white" text-variant="dark" style="padding: 0 !important;">
-        <b-card-text>
-          Developed by higorasilverio
-        </b-card-text>
-      </b-card>
+      <span>Developed by higorasilverio</span>
     </footer>
   </div>
 </template>
@@ -29,21 +22,43 @@ export default {
 <style>
 body {
   background-image: url("assets/things_02.png");
-  background-repeat: no-repeat;
+  background-repeat: repeat;
   background-position: center;
+  background-size: 100vh;
   background-color: #cccccc;
+  height: 100%;
+}
+
+header {
+  position: absolute;
+  top: 0;
+  height: 13vh;
+  background-color: #000;
+  color: #fff;
+  border-radius: 5vh;
+  width: 98%;
+  margin: 1vh 1%;
+  padding: 1vh 5vh;
+}
+
+main {
+  position: absolute;
+  height: 77vh;
+  top: 14vh;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 2vh;
+  margin: 1vh 5%;
+  width: 90%;
 }
 
 footer {
   position: absolute;
   background-color: #fff;
-  width: 100%;
   bottom: 0;
-  border-radius: 10px;
+  border-radius: 5vh;
+  width: 98%;
+  margin: 1vh 1%;
+  padding: 1vh 5vh;
 }
 
-footer .card-body {
-  padding: 2%;
-  border-radius: 10px;
-}
 </style>
