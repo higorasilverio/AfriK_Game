@@ -6,7 +6,7 @@
     <div>
       <b-img 
         v-bind="imgProps" :src="require('../assets/play.png')" 
-        fluid alt="play_button" v-on:click="callAlert ()"></b-img>
+        fluid alt="play_button" v-on:click="goToPlayers ()"></b-img>
     </div>
     <div class="play">
       <b-button v-b-modal.game-instructions size="lg" variant="outline-dark">Instructions</b-button>
@@ -60,7 +60,7 @@ export default {
     }
   },
   methods: {
-    callAlert () {
+    goToPlayers () {
       this.$router.push('/players')
     }
   }
