@@ -9,9 +9,9 @@
         fluid alt="play_button" v-on:click="callAlert ()"></b-img>
     </div>
     <div class="play">
-      <b-button v-b-modal.modal-1 size="lg" variant="outline-dark">Instructions</b-button>
+      <b-button v-b-modal.game-instructions size="lg" variant="outline-dark">Instructions</b-button>
     </div>
-    <b-modal id="modal-1" title="Instructions" centered hide-footer>
+    <b-modal id="game-instructions" title="Instructions" centered hide-footer>
       <div style="padding: 10px; height: 75vh; overflow: scroll;">
         <ul>
           <li>This game is intended to be played by 6 (six) or more players. However, it could be played with only 4 (four).</li>
@@ -93,23 +93,23 @@ export default {
   box-shadow: 5px 5px #CCC;
 }
 
-#modal-1 ul{
+#game-instructions ul{
   padding: 0;
   list-style-type: none;
 }
 
-#modal-1 li{
+#game-instructions li{
   border-bottom: 1px dashed rgba(200, 200, 200, 0.8);
   padding: 2.5% 0;
   text-align: justify;
 }
 
-#modal-1 .rounds {
+#game-instructions .rounds {
   text-align: center;
   font-weight: 600;
 }
 
-#modal-1 .ends {
+#game-instructions .ends {
   border-bottom: 1px solid rgba(200, 200, 200, 0.95);
 }
 </style>
