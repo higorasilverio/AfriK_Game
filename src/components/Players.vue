@@ -5,7 +5,7 @@
         <label for="number">Players:</label>
         <b-form-spinbutton id="number" size="sm" v-model="players" inline wrap min="4" max="10" placeholder="--"></b-form-spinbutton>
       </div>
-      <div class="margin-bottom">
+      <div v-if="!missingName" class="margin-bottom">
         <b-form-checkbox
           id="checkbox-1"
           v-model="status"
@@ -108,10 +108,45 @@ export default {
     return {
       players: 6,
       status: 'not_accepted',
+      missingName: true,
       randomControl: false,
+      flag: 0,
       white: ['', '', '', '', '', ''],
       black: ['', '', '', '', '', ''],
       random: ['', '', '', '', '', '', '', '', '', '']
+    }
+  },
+  watch: {
+    status: function () {
+      if (this.status === 'accepted') {
+        this.sizingTeams()
+        this.random = []
+        this.random = this.random.concat(this.white, this.black)
+      } else {
+        let control = Math.ceil(this.players / 2)
+        for (let i in this.random) {
+          if (i < control) this.white[i] = this.random[i]
+          else this.black[i] = this.random[i]
+        }
+      }
+    },
+    players: function () {
+      let control = Math.ceil(this.players / 2)
+      if (this.status === 'accepted') {
+        for (let i = 0; i < this.players; i++) {
+          this.flag = this.random[i] === '' ? this.flag++ : this.flag
+        }
+      } else {
+        for (let i = 0; i < control; i++) {
+          this.flag = this.white[i] === '' ? this.flag++ : this.flag
+        }
+        control = Math.floor(this.players / 2)
+        for (let i = 0; i < control; i++) {
+          this.flag = this.black[i] === '' ? this.flag++ : this.flag
+        }
+      }
+      this.missingName = this.flag > 0
+      this.flag = 0
     }
   },
   methods: {
@@ -120,11 +155,8 @@ export default {
       if (this.randomControl) {
         this.selectTeams()
       } else {
-        if (this.players % 2 === 0) {
-          this.verifyTeamsEven()
-        } else {
-          this.verifyTeamsOver()
-        }
+        this.sizingTeams()
+        this.players % 2 === 0 ? this.verifyTeamsEven() : this.verifyTeamsOver()
       }
     },
     selectTeams () {
@@ -204,11 +236,17 @@ export default {
       this.$bvToast.toast('Name all players before continue!', {
         title: 'Missing player name',
         autoHideDelay: 3500,
-        toaster: 'b-toaster-bottom-right',
+        toaster: 'b-toaster-bottom-center',
         solid: true,
         variant: 'danger',
         appendToast: append
       })
+    },
+    sizingTeams () {
+      let whiteTeamSize = Math.ceil(this.players / 2)
+      let blackTeamSize = Math.floor(this.players / 2)
+      this.white = this.white.slice(0, whiteTeamSize)
+      this.black = this.black.slice(0, blackTeamSize)
     },
     goToWords () {
       this.$router.push('/words')
