@@ -118,20 +118,63 @@ export default {
     checkPlayers () {
       this.randomControl = this.status === 'accepted'
       if (this.randomControl) {
-        this.selectTeam()
+        this.selectTeams()
       } else {
-        console.log('Not random!')
+        if (this.players % 2 === 0) {
+          this.verifyTeamsEven()
+        } else {
+          this.verifyTeamsOver()
+        }
       }
     },
-    selectTeam () {
+    selectTeams () {
       this.white = []
       this.black = []
       let sequence = this.generateSequence()
-      for (let i = 0; i < this.players; i++) {
-        if (i % 2 === 0) {
-          this.white.push(this.random[sequence[i]])
-        } else {
-          this.black.push(this.random[sequence[i]])
+      if (sequence) {
+        for (let i = 0; i < this.players; i++) {
+          if (i % 2 === 0) {
+            this.white.push(this.random[sequence[i]])
+          } else {
+            this.black.push(this.random[sequence[i]])
+          }
+        }
+        console.log('White: ' + this.white)
+        console.log('Black: ' + this.black)
+      }
+    },
+    verifyTeamsEven () {
+      let validWhite = false
+      let validBlack = false
+      let count = this.players / 2
+      for (let i = 0; i < count; i++) {
+        validWhite = this.white[i] === ''
+        validBlack = this.black[i] === ''
+        if (validWhite || validBlack) {
+          this.missingPlayers()
+          return
+        }
+      }
+      console.log('White: ' + this.white)
+      console.log('Black: ' + this.black)
+    },
+    verifyTeamsOver () {
+      let validWhite = false
+      let validBlack = false
+      let count = Math.floor((this.players / 2) + 1)
+      for (let i = 0; i < count; i++) {
+        validWhite = this.white[i] === ''
+        if (validWhite) {
+          this.missingPlayers()
+          return
+        }
+      }
+      count = Math.floor(this.players / 2)
+      for (let i = 0; i < count; i++) {
+        validBlack = this.black[i] === ''
+        if (validBlack) {
+          this.missingPlayers()
+          return
         }
       }
       console.log('White: ' + this.white)
@@ -141,8 +184,8 @@ export default {
       let sequence = []
       for (let i = 0; i < this.players; i++) {
         if (this.random[i] === '') {
-          console.log('Still missing players names!')
-          break
+          this.missingPlayers()
+          return
         }
         let randomNumber = this.getRandomIntInclusive(0, this.players - 1)
         while (sequence.includes(randomNumber)) {
@@ -156,6 +199,16 @@ export default {
       min = Math.ceil(min)
       max = Math.floor(max)
       return Math.floor(Math.random() * (max - min + 1)) + min
+    },
+    missingPlayers (append = false) {
+      this.$bvToast.toast('Name all players before continue!', {
+        title: 'Missing player name',
+        autoHideDelay: 3500,
+        toaster: 'b-toaster-bottom-right',
+        solid: true,
+        variant: 'danger',
+        appendToast: append
+      })
     },
     goToWords () {
       this.$router.push('/words')
