@@ -8,7 +8,7 @@
       <router-view></router-view>
     </main>
     <footer>
-      <span>Developed by higorasilverio</span><span><b-icon icon="suit-club-fill"/></span>
+      <span class="main-color">Developed by higorasilverio</span><span><b-icon icon="suit-club-fill"/></span>
     </footer>
   </div>
 </template>
@@ -33,7 +33,7 @@ body {
   position: absolute;
   top: 0;
   height: 13vh;
-  background-color: #000;
+  background-color: #343a40;
   color: #fff;
   -webkit-border-radius: 15px;
   -moz-border-radius: 15px;
@@ -75,5 +75,9 @@ body {
   margin: 0;
   padding: 0;
   padding-bottom: 1vh;
+}
+
+.main-color{
+  color: #343a40;
 }
 </style>

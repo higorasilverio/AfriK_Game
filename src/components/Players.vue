@@ -1,22 +1,25 @@
 <template>
   <div class="players">
+    <div class="background-hold">
+      <h3 class="main-color">{{ message[number].messageTop }}</h3>
+    </div>
     <b-form class="data">
-      <div class="margin-bottom">
-        <label for="number">Players:</label>
-        <b-form-spinbutton id="number" size="sm" v-model="players" inline wrap min="4" max="10" placeholder="--"></b-form-spinbutton>
+      <div v-if="configuration" class="margin-bottom">
+        <label for="number">#Players:</label>
+        <b-form-spinbutton id="number" size="sm" v-model="players" inline wrap min="4" max="10" placeholder="--" />
       </div>
-      <div v-if="!missingName" class="margin-bottom">
+      <div v-if="configuration" class="margin-bottom">
         <b-form-checkbox
           id="checkbox-1"
-          v-model="status"
+          v-model="choice"
           name="checkbox-1"
-          value='accepted'
-          unchecked-value='not_accepted'
+          value='random'
+          unchecked-value='fixed'
         >
-          Select teams at random
+          Random
         </b-form-checkbox>
       </div>
-      <div v-if="status == 'not_accepted'">
+      <div v-if="choice == 'fixed' && !configuration">
         <div class="container-row shadow-border">
           <div class="team">WHITE TEAM</div>
           <div class="container-column">
@@ -58,7 +61,7 @@
           </div>
         </div>
       </div>
-      <div v-else>
+      <div v-if="choice == 'random' && !configuration">
         <div class="container-row">
           <div class="container-column">
             <div class="spacing">
@@ -95,9 +98,60 @@
         </div>
       </div>
     </b-form>
-    <div class="continue-button">
-      <b-button variant="outline-dark" v-on:click="checkPlayers ()">Continue</b-button>
+    <div class="background-hold">
+      <b-button v-if="!configuration" variant="dark" v-on:click="switchConfiguration ()">
+        <b-icon icon="arrow-left"/> Config.
+      </b-button>
+      <b-button v-if="!configuration" variant="outline-dark" v-on:click="checkPlayers ()">
+        {{ message[number].messageButton }} <b-icon icon="arrow-right"/>
+      </b-button>
+      <b-button v-else variant="outline-dark" v-on:click="switchConfiguration ()">
+        {{ message[number].messageButton }} <b-icon icon="arrow-right"/>
+      </b-button>
     </div>
+    <b-modal id="confirm-teams" centered>
+      <template #modal-title>
+        <h3>Confirm teams?</h3>
+      </template>
+      <div class="shadow-border container-column rounded interna-spacing">
+        <h4>White</h4>
+        <div class="container-row">
+          <h5><b-icon icon="person"/> {{ white[0] }}</h5>
+          <h5><b-icon icon="person"/> {{ white[1] }}</h5>
+        </div>
+        <div class="container-row">
+          <h5 v-if="white[2]"><b-icon icon="person"/> {{ white[2] }}</h5>
+          <h5 v-if="white[3]"><b-icon icon="person"/> {{ white[3] }}</h5>
+        </div>
+        <div class="container-row">
+          <h5 v-if="white[4]"><b-icon icon="person"/> {{ white[4] }}</h5>
+        </div>
+      </div>
+      <div class="dark shadow-border container-column rounded interna-spacing">
+        <h4>Black</h4>
+        <div class="container-row">
+          <h5><b-icon icon="person"/> {{ black[0] }}</h5>
+          <h5><b-icon icon="person"/> {{ black[1] }}</h5>
+        </div>
+        <div class="container-row">
+          <h5 v-if="black[2]"><b-icon icon="person"/> {{ black[2] }}</h5>
+          <h5 v-if="black[3]"><b-icon icon="person"/> {{ black[3] }}</h5>
+        </div>
+        <div class="container-row">
+          <h5 v-if="black[4]"><b-icon icon="person"/> {{ black[4] }}</h5>
+        </div>
+      </div>
+      <template #modal-footer>
+        <div class="background-hold">
+          <b-button v-if="choice === 'random'" variant="dark" v-on:click="selectTeams ()">
+            <b-icon icon="arrow-clockwise"/> Shuffle
+          </b-button>
+          <b-button variant="outline-dark" v-on:click="goToWords ()">
+             OK <b-icon icon="arrow-right"/>
+          </b-button>
+        </div>
+      </template>
+    </b-modal>
   </div>
 </template>
 
@@ -107,51 +161,27 @@ export default {
   data () {
     return {
       players: 6,
-      status: 'not_accepted',
-      missingName: true,
+      choice: 'fixed',
+      configuration: true,
       randomControl: false,
-      flag: 0,
-      white: ['', '', '', '', '', ''],
-      black: ['', '', '', '', '', ''],
-      random: ['', '', '', '', '', '', '', '', '', '']
+      number: 0,
+      message: [{messageTop: 'Configurations', messageButton: 'Names'}, {messageTop: 'Names', messageButton: 'Words'}],
+      white: [],
+      black: [],
+      random: []
     }
   },
-  watch: {
-    status: function () {
-      if (this.status === 'accepted') {
-        this.sizingTeams()
-        this.random = []
-        this.random = this.random.concat(this.white, this.black)
-      } else {
-        let control = Math.ceil(this.players / 2)
-        for (let i in this.random) {
-          if (i < control) this.white[i] = this.random[i]
-          else this.black[i] = this.random[i]
-        }
-      }
-    },
-    players: function () {
-      let control = Math.ceil(this.players / 2)
-      if (this.status === 'accepted') {
-        for (let i = 0; i < this.players; i++) {
-          this.flag = this.random[i] === '' ? this.flag++ : this.flag
-        }
-      } else {
-        for (let i = 0; i < control; i++) {
-          this.flag = this.white[i] === '' ? this.flag++ : this.flag
-        }
-        control = Math.floor(this.players / 2)
-        for (let i = 0; i < control; i++) {
-          this.flag = this.black[i] === '' ? this.flag++ : this.flag
-        }
-      }
-      this.missingName = this.flag > 0
-      this.flag = 0
-    }
-  },
+  watch: {},
   methods: {
+    switchConfiguration () {
+      this.white = ['', '', '', '', '', '']
+      this.black = ['', '', '', '', '', '']
+      this.random = ['', '', '', '', '', '', '', '', '', '']
+      this.configuration = !this.configuration
+      this.number = this.number === 0 ? 1 : 0
+    },
     checkPlayers () {
-      this.randomControl = this.status === 'accepted'
+      this.randomControl = this.choice === 'random'
       if (this.randomControl) {
         this.selectTeams()
       } else {
@@ -171,8 +201,7 @@ export default {
             this.black.push(this.random[sequence[i]])
           }
         }
-        console.log('White: ' + this.white)
-        console.log('Black: ' + this.black)
+        this.$bvModal.show('confirm-teams')
       }
     },
     verifyTeamsEven () {
@@ -187,8 +216,7 @@ export default {
           return
         }
       }
-      console.log('White: ' + this.white)
-      console.log('Black: ' + this.black)
+      this.$bvModal.show('confirm-teams')
     },
     verifyTeamsOver () {
       let validWhite = false
@@ -209,8 +237,7 @@ export default {
           return
         }
       }
-      console.log('White: ' + this.white)
-      console.log('Black: ' + this.black)
+      this.$bvModal.show('confirm-teams')
     },
     generateSequence () {
       let sequence = []
@@ -317,7 +344,7 @@ export default {
 
 .dark{
   color: #fff;
-  background-color: #000;
+  background-color: #343a40;
   margin-top: 1vh;
 }
 
@@ -325,11 +352,15 @@ export default {
   margin: 0.2vh;
 }
 
+.interna-spacing{
+  padding: 1vh;
+}
+
 .alignment{
   text-align: center;
 }
 
-.continue-button{
+.background-hold{
   background-color: #FFF; 
   border-radius: 10px; 
   -webkit-border-radius: 10px;
@@ -339,5 +370,18 @@ export default {
   padding: 3%; 
   -webkit-box-shadow: 5px 5px #CCC; 
   box-shadow: 5px 5px #CCC;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.main-color{
+  color: #343a40;
+}
+
+.rounded {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
 }
 </style>

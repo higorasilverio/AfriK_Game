@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="play">
-      <h3>Let's play!</h3>
+      <h3 class="main-color">Let's play!</h3>
     </div>
     <div>
       <b-img 
@@ -111,5 +111,9 @@ export default {
 
 #game-instructions .ends {
   border-bottom: 1px solid rgba(200, 200, 200, 0.95);
+}
+
+.main-color{
+  color: #343a40;
 }
 </style>
