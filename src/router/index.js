@@ -22,7 +22,8 @@ export default new Router({
     {
       path: '/words',
       name: 'words',
-      component: Words
+      component: Words,
+      props: true
     },
     {
       path: '/game',

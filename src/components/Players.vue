@@ -111,34 +111,34 @@
     </div>
     <b-modal id="confirm-teams" centered>
       <template #modal-title>
-        <h3>Confirm teams?</h3>
+        <h4>Confirm teams?</h4>
       </template>
-      <div class="shadow-border container-column rounded interna-spacing">
-        <h4>White</h4>
+      <div class="shadow-border container-column rounded interna-spacing vh-bottom">
+        <h5 class="vh-bottom">White</h5>
         <div class="container-row">
-          <h5><b-icon icon="person"/> {{ white[0] }}</h5>
-          <h5><b-icon icon="person"/> {{ white[1] }}</h5>
+          <div class="player-highlight"><h6><b-icon icon="person"/> {{ white[0] }}</h6></div>
+          <div class="player-highlight"><h6><b-icon icon="person"/> {{ white[1] }}</h6></div>
         </div>
         <div class="container-row">
-          <h5 v-if="white[2]"><b-icon icon="person"/> {{ white[2] }}</h5>
-          <h5 v-if="white[3]"><b-icon icon="person"/> {{ white[3] }}</h5>
+          <div v-if="white[2]" class="player-highlight"><h6><b-icon icon="person"/> {{ white[2] }}</h6></div>
+          <div v-if="white[3]" class="player-highlight"><h6><b-icon icon="person"/> {{ white[3] }}</h6></div>
         </div>
         <div class="container-row">
-          <h5 v-if="white[4]"><b-icon icon="person"/> {{ white[4] }}</h5>
+          <div v-if="white[4]" class="player-highlight"><h6><b-icon icon="person"/> {{ white[4] }}</h6></div>
         </div>
       </div>
-      <div class="dark shadow-border container-column rounded interna-spacing">
-        <h4>Black</h4>
+      <div class="dark shadow-border container-column rounded interna-spacing vh-bottom">
+        <h5 class="vh-bottom">Black</h5>
         <div class="container-row">
-          <h5><b-icon icon="person"/> {{ black[0] }}</h5>
-          <h5><b-icon icon="person"/> {{ black[1] }}</h5>
+          <div class="player-highlight"><h6><b-icon icon="person"/> {{ black[0] }}</h6></div>
+          <div class="player-highlight"><h6><b-icon icon="person"/> {{ black[1] }}</h6></div>
         </div>
         <div class="container-row">
-          <h5 v-if="black[2]"><b-icon icon="person"/> {{ black[2] }}</h5>
-          <h5 v-if="black[3]"><b-icon icon="person"/> {{ black[3] }}</h5>
+          <div v-if="black[2]" class="player-highlight"><h6><b-icon icon="person"/> {{ black[2] }}</h6></div>
+          <div v-if="black[3]" class="player-highlight"><h6><b-icon icon="person"/> {{ black[3] }}</h6></div>
         </div>
         <div class="container-row">
-          <h5 v-if="black[4]"><b-icon icon="person"/> {{ black[4] }}</h5>
+          <div v-if="black[4]" class="player-highlight"><h6><b-icon icon="person"/> {{ black[4] }}</h6></div>
         </div>
       </div>
       <template #modal-footer>
@@ -276,7 +276,7 @@ export default {
       this.black = this.black.slice(0, blackTeamSize)
     },
     goToWords () {
-      this.$router.push('/words')
+      this.$router.push({ name: 'words', params: { white: this.white, black: this.black } })
     }
   }
 }
@@ -383,5 +383,27 @@ export default {
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
+}
+
+.player-highlight {
+  border: 1px solid #CCC;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-box-shadow: 2px 2px #CCC; 
+  box-shadow: 2px 2px #CCC;
+  border-radius: 10px;
+  padding: 0.5vh 1.5vh;
+  margin: 0.5vh;
+  width: 45%;
+  text-align: center;
+}
+
+.player-highlight h6 {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.vh-bottom {
+  padding-bottom: 2vh;
 }
 </style>

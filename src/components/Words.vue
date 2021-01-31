@@ -1,16 +1,24 @@
 <template>
   <div class="players">
     <span>Words</span>
+    <span>{{ black }}</span>
+    <span>{{ white }}</span>
   </div>
 </template>
 
 <script>
 export default {
   name: 'words',
+  props: ['black', 'white'],
   data () {
     return {
-      msg: 'Welcome to Your Vue.js PWA'
+      blackTeam: [],
+      whiteTeam: []
     }
+  },
+  mounted () {
+    console.log(this.black)
+    console.log(this.white)
   }
 }
 </script>
