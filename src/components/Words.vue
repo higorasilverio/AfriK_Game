@@ -45,7 +45,7 @@ export default {
       for (let i = 0; i < 3; i++) {
         let control = this.words[i] === ''
         if (control) {
-          this.missingPlayers()
+          this.missingWords()
           break
         } else {
           this.allWords = this.allWords.concat(this.words)
@@ -57,7 +57,7 @@ export default {
         }
       }
     },
-    missingPlayers (append = false) {
+    missingWords (append = false) {
       this.$bvToast.toast('Fill all words before continue!', {
         title: 'Missing words',
         autoHideDelay: 3500,
