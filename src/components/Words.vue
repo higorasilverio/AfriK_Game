@@ -46,16 +46,15 @@ export default {
         let control = this.words[i] === ''
         if (control) {
           this.missingWords()
-          break
-        } else {
-          this.allWords = this.allWords.concat(this.words)
-          this.words = ['', '', '']
-          if (this.currentNumber < this.players.length - 1) {
-            this.currentNumber++
-            this.currentPlayer = this.players[this.currentNumber]
-          } else console.log('All players are gone!')
+          return
         }
       }
+      this.allWords = this.allWords.concat(this.words)
+      this.words = ['', '', '']
+      if (this.currentNumber < this.players.length - 1) {
+        this.currentNumber++
+        this.currentPlayer = this.players[this.currentNumber]
+      } else console.log(this.allWords)
     },
     missingWords (append = false) {
       this.$bvToast.toast('Fill all words before continue!', {
