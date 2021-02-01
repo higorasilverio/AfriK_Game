@@ -54,7 +54,7 @@ export default {
       if (this.currentNumber < this.players.length - 1) {
         this.currentNumber++
         this.currentPlayer = this.players[this.currentNumber]
-      } else console.log(this.allWords)
+      } else this.goToGame()
     },
     missingWords (append = false) {
       this.$bvToast.toast('Fill all words before continue!', {
@@ -65,6 +65,9 @@ export default {
         variant: 'danger',
         appendToast: append
       })
+    },
+    goToGame () {
+      this.$router.push({ name: 'game', params: { allWords: this.allWords, black: this.black, white: this.white } })
     }
   }
 
