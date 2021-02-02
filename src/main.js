@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import Vue2TouchEvents from 'vue2-touch-events'
+import vueAwesomeCountdown from 'vue-awesome-countdown'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -12,6 +13,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(Vue2TouchEvents)
+Vue.use(vueAwesomeCountdown, 'vac') // Component name, `countdown` and `vac` by default
 
 Vue.config.productionTip = false
 

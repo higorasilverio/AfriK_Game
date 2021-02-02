@@ -23,15 +23,19 @@
         <h6 class="fingerprint-icon material-icons">fingerprint</h6>
       </div>
       <div class="background-hold">
-        <span>Timer</span>
+        <Timer />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Timer from '@/components/Timer'
 export default {
   name: 'game',
+  components: {
+    Timer
+  },
   props: ['allWords', 'black', 'white'],
   data () {
     return {
