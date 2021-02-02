@@ -16,14 +16,14 @@
         <h6>Player: Higor</h6>
       </div>
       <div class="background-hold container-column">
-        <div><h5>{{ word }}</h5></div>
+        <div><h5 v-if="show">{{ word }}</h5></div>
       </div>
-      <div class="background-hold container-column">
+      <div class="background-hold container-column" v-touch:start="startHandler" v-touch:end="endHandler">
         <h6>Reveal word:</h6>
         <h6 class="fingerprint-icon material-icons">fingerprint</h6>
       </div>
       <div class="background-hold">
-        <h6>Timer</h6>
+        <span>Timer</span>
       </div>
     </div>
   </div>
@@ -36,12 +36,19 @@ export default {
   data () {
     return {
       setting: true,
-      word: 'Orangotango'
+      word: 'Orangotango',
+      show: false
     }
   },
   methods: {
     start () {
       this.setting = false
+    },
+    startHandler () {
+      this.show = true
+    },
+    endHandler () {
+      this.show = false
     }
   }
 }

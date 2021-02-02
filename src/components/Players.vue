@@ -160,7 +160,7 @@ export default {
   name: 'players',
   data () {
     return {
-      players: 6,
+      players: 4,
       choice: 'fixed',
       configuration: true,
       randomControl: false,
