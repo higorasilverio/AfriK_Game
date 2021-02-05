@@ -9,14 +9,14 @@
         <h6 class="main-color">Click here to start playing</h6>
         <span class="fingerprint-icon material-icons">fingerprint</span>
       </div>
+      <div class="background-hold container-column">
+        <h6>Team: {{ currentTeam }}</h6>
+        <h6>Player: {{ currentPlayer }}</h6>
+      </div>
     </div>
     <div v-else class="container-column height-content">
       <div class="background-hold container-column">
-        <h6>Team: White</h6>
-        <h6>Player: Higor</h6>
-      </div>
-      <div class="background-hold container-column">
-        <div><h5 v-if="show">{{ word }}</h5></div>
+        <div><h5 v-if="show">{{ currentWord }}</h5></div>
       </div>
       <div class="background-hold container-column" v-touch:start="startHandler" v-touch:end="endHandler">
         <h6>Reveal word:</h6>
@@ -40,9 +40,17 @@ export default {
   data () {
     return {
       setting: true,
-      word: 'Orangotango',
-      show: false
+      show: false,
+      round: 1,
+      currentWord: '',
+      currentTeam: 'White',
+      currentPlayer: ''
     }
+  },
+  mounted: function () {
+    this.randomAllWords()
+    this.currentPlayer = this.white[0]
+    this.currentWord = this.allWords[0]
   },
   methods: {
     start () {
@@ -53,6 +61,18 @@ export default {
     },
     endHandler () {
       this.show = false
+    },
+    randomAllWords () {
+      // Fisher-Yates shuffle algorithm
+      let indexLength = this.allWords.length
+      if (indexLength === 0) return false
+      while (--indexLength) {
+        let indexRandom = Math.floor(Math.random() * (indexLength + 1))
+        let temporaryLength = this.allWords[indexLength]
+        let temporaryRandom = this.allWords[indexRandom]
+        this.allWords[indexLength] = temporaryRandom
+        this.allWords[indexRandom] = temporaryLength
+      }
     }
   }
 }
