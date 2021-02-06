@@ -18,12 +18,20 @@
       <div class="background-hold container-column">
         <div><h5 v-if="show">{{ currentWord }}</h5></div>
       </div>
-      <div class="background-hold container-column" v-touch:start="startHandler" v-touch:end="endHandler">
+      <div class="background-hold" v-touch:start="startHandler" v-touch:end="endHandler">
         <h6>Reveal word:</h6>
         <h6 class="fingerprint-icon material-icons">fingerprint</h6>
       </div>
-      <div class="background-hold">
-        <Timer />
+      <div style="display: flex; flex-direction: row;">
+        <div class="background-hold-row">
+          <Timer />
+        </div>
+        <div class="background-hold-row">
+          <b-button variant="outline-dark" v-on:click="goItRight">
+            Got it right 
+            <b-icon icon="check2-all">
+          </b-icon></b-button>
+        </div>
       </div>
     </div>
   </div>
@@ -43,7 +51,7 @@ export default {
       show: false,
       round: 1,
       currentWord: '',
-      currentTeam: 'White',
+      currentTeam: 'white',
       currentPlayer: ''
     }
   },
@@ -73,6 +81,15 @@ export default {
         this.allWords[indexLength] = temporaryRandom
         this.allWords[indexRandom] = temporaryLength
       }
+    },
+    goItRight () {
+      let team = this.currentTeam
+      let player = this.currentPlayer
+      let word = this.currentWord
+      if (team === 'white') {
+        let playerPosition = this.white.indexOf(player)
+        console.log(word, playerPosition)
+      } else console.log(word)
     }
   }
 }
@@ -98,6 +115,20 @@ export default {
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px; 
   width: 80%; 
+  margin: 0 auto; 
+  padding: 3%; 
+  -webkit-box-shadow: 5px 5px #CCC; 
+  box-shadow: 5px 5px #CCC;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.background-hold-row{
+  background-color: #FFF; 
+  border-radius: 10px; 
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px; 
   margin: 0 auto; 
   padding: 3%; 
   -webkit-box-shadow: 5px 5px #CCC; 
