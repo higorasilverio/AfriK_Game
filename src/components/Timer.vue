@@ -1,12 +1,12 @@
 <template>
     <div>
-        <vac :left-time="60000" :auto-start="false" ref="vac2" @start="start">
+        <vac :left-time="60000" :auto-start="false" ref="vac2" @start="start" @finish="finish">
         <span
             slot="process"
             slot-scope="{ timeObj }">
             {{ timeObj.ceil.s }}
             </span>
-            <span slot="finish">Done!</span>
+            <span slot="finish">0</span>
         </vac>
     </div>
 </template>
@@ -27,6 +27,9 @@ export default {
     },
     start () {
       console.log('start')
+    },
+    finish () {
+      console.log('finish')
     }
   }
 }

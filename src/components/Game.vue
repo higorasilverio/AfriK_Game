@@ -49,6 +49,7 @@ export default {
     return {
       setting: true,
       show: false,
+      gameWords: [],
       round: 1,
       currentWord: '',
       currentTeam: 'white',
@@ -56,9 +57,19 @@ export default {
     }
   },
   mounted: function () {
+    // remove this lines below
+    this.allWords = [
+      'primeira', 'segunda', 'terceira',
+      'quarta', 'quinta', 'sexta',
+      'sétima', 'oitava', 'nona',
+      'decima', 'decimaPri', 'decimaSeg'
+    ]
+    this.white = ['Player1', 'Player2']
+    this.black = ['Player3', 'Player4']
+    // until here
     this.randomAllWords()
     this.currentPlayer = this.white[0]
-    this.currentWord = this.allWords[0]
+    this.currentWord = this.gameWords[0]
   },
   methods: {
     start () {
@@ -81,15 +92,38 @@ export default {
         this.allWords[indexLength] = temporaryRandom
         this.allWords[indexRandom] = temporaryLength
       }
+      this.gameWords = this.allWords
     },
     goItRight () {
-      let team = this.currentTeam
-      let player = this.currentPlayer
-      let word = this.currentWord
-      if (team === 'white') {
-        let playerPosition = this.white.indexOf(player)
-        console.log(word, playerPosition)
-      } else console.log(word)
+      let removeIndex = this.gameWords.findIndex(found => found === this.currentWord)
+      this.gameWords.splice(removeIndex, 1)
+      this.checkRoundGame(this.gameWords.length)
+      this.currentTeam === 'white' ? this.handleWhitePlayer() : this.handleBlackPlayer()
+      this.randomAllWords()
+      this.currentWord = this.gameWords[0]
+    },
+    checkRoundGame (length) {
+      if (length === 0) {
+        this.setting = true
+        this.round++
+        if (this.round !== 4) {
+          alert('Round over')
+          this.currentTeam = this.currentTeam === 'white' ? 'black' : 'white'
+          this.currentPlayer = this.currentTeam === 'white' ? this.white[0] : this.black[0]
+          this.randomAllWords()
+        }
+      }
+      if (this.round === 4) alert('Game over')
+    },
+    handleWhitePlayer () {
+      let whitePlayerIndex = this.white.findIndex(found => found === this.currentPlayer)
+      this.currentPlayer =
+        this.white.length === whitePlayerIndex + 1 ? this.currentPlayer = this.white[0] : this.white[whitePlayerIndex + 1]
+    },
+    handleBlackPlayer () {
+      let blackPlayerIndex = this.black.findIndex(found => found === this.currentPlayer)
+      this.currentPlayer =
+        this.black.length === blackPlayerIndex + 1 ? this.currentPlayer = this.black[0] : this.black[blackPlayerIndex + 1]
     }
   }
 }
