@@ -27,7 +27,7 @@
           <Timer />
         </div>
         <div class="background-hold-row">
-          <b-button variant="outline-dark" v-on:click="goItRight">
+          <b-button variant="outline-dark" v-on:click="gotItRight">
             Got it right 
             <b-icon icon="check2-all">
           </b-icon></b-button>
@@ -51,6 +51,10 @@ export default {
       show: false,
       gameWords: [],
       round: 1,
+      whiteScore: 0,
+      blackScore: 0,
+      whiteRoundsWon: 0,
+      blackRoundsWon: 0,
       currentWord: '',
       currentTeam: 'white',
       currentPlayer: ''
@@ -67,9 +71,10 @@ export default {
     this.white = ['Player1', 'Player2']
     this.black = ['Player3', 'Player4']
     // until here
+    this.gameWords = this.allWords
     this.randomAllWords()
     this.currentPlayer = this.white[0]
-    this.currentWord = this.gameWords[0]
+    this.currentWord = this.pickRandomWord()
   },
   methods: {
     start () {
@@ -83,37 +88,49 @@ export default {
     },
     randomAllWords () {
       // Fisher-Yates shuffle algorithm
-      let indexLength = this.allWords.length
+      let indexLength = this.gameWords.length
       if (indexLength === 0) return false
       while (--indexLength) {
         let indexRandom = Math.floor(Math.random() * (indexLength + 1))
-        let temporaryLength = this.allWords[indexLength]
-        let temporaryRandom = this.allWords[indexRandom]
-        this.allWords[indexLength] = temporaryRandom
-        this.allWords[indexRandom] = temporaryLength
+        let temporaryLength = this.gameWords[indexLength]
+        let temporaryRandom = this.gameWords[indexRandom]
+        this.gameWords[indexLength] = temporaryRandom
+        this.gameWords[indexRandom] = temporaryLength
       }
-      this.gameWords = this.allWords
     },
-    goItRight () {
-      let removeIndex = this.gameWords.findIndex(found => found === this.currentWord)
-      this.gameWords.splice(removeIndex, 1)
+    pickRandomWord () {
+      return this.gameWords[Math.floor(Math.random() * this.gameWords.length)]
+    },
+    gotItRight () {
+      this.currentTeam === 'white' ? this.whiteScore++ : this.blackScore++
+      let toRemoveIndex = this.gameWords.findIndex(found => found === this.currentWord)
+      if (toRemoveIndex > -1) this.gameWords.splice(toRemoveIndex, 1)
       this.checkRoundGame(this.gameWords.length)
       this.currentTeam === 'white' ? this.handleWhitePlayer() : this.handleBlackPlayer()
-      this.randomAllWords()
-      this.currentWord = this.gameWords[0]
+      this.currentWord = this.pickRandomWord()
     },
     checkRoundGame (length) {
       if (length === 0) {
+        this.blackScore > this.whiteScore ? this.blackRoundsWon++ : this.whiteRoundsWon++
+        this.whiteScore = 0
+        this.blackScore = 0
         this.setting = true
         this.round++
         if (this.round !== 4) {
           alert('Round over')
           this.currentTeam = this.currentTeam === 'white' ? 'black' : 'white'
           this.currentPlayer = this.currentTeam === 'white' ? this.white[0] : this.black[0]
+          this.gameWords = this.allWords
           this.randomAllWords()
+          this.currentWord = this.pickRandomWord()
         }
       }
-      if (this.round === 4) alert('Game over')
+      if (this.round === 4) {
+        if (this.blackRoundsWon > this.whiteRoundsWon) console.log('Black Team Won!')
+        if (this.blackRoundsWon < this.whiteRoundsWon) console.log('White Team Won!')
+        if (this.blackRoundsWon === this.whiteRoundsWon) console.log('It is a Draw!')
+        alert('Game Over')
+      }
     },
     handleWhitePlayer () {
       let whitePlayerIndex = this.white.findIndex(found => found === this.currentPlayer)
