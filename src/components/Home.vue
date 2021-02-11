@@ -59,6 +59,9 @@ export default {
       msg: 'Welcome to Your Vue.js PWA'
     }
   },
+  mounted () {
+    this.$session.destroy()
+  },
   methods: {
     goToPlayers () {
       this.$router.push('/players')

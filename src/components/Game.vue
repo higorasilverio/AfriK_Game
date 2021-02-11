@@ -44,7 +44,6 @@ export default {
   components: {
     Timer
   },
-  props: ['allWords', 'black', 'white'],
   data () {
     return {
       setting: true,
@@ -61,17 +60,10 @@ export default {
     }
   },
   mounted: function () {
-    // remove this lines below
-    this.allWords = [
-      'primeira', 'segunda', 'terceira',
-      'quarta', 'quinta', 'sexta',
-      'sétima', 'oitava', 'nona',
-      'decima', 'decimaPri', 'decimaSeg'
-    ]
-    this.white = ['Player1', 'Player2']
-    this.black = ['Player3', 'Player4']
-    // until here
-    this.gameWords = this.allWords
+    this.white = this.$session.get('Teams').white
+    this.black = this.$session.get('Teams').black
+    this.gameWords = this.$session.get('Words')
+    console.log(this.gameWords)
     this.randomAllWords()
     this.currentPlayer = this.white[0]
     this.currentWord = this.pickRandomWord()
@@ -120,7 +112,8 @@ export default {
           alert('Round over')
           this.currentTeam = this.currentTeam === 'white' ? 'black' : 'white'
           this.currentPlayer = this.currentTeam === 'white' ? this.white[0] : this.black[0]
-          this.gameWords = this.allWords
+          this.gameWords = this.$session.get('Words')
+          console.log(this.gameWords)
           this.randomAllWords()
           this.currentWord = this.pickRandomWord()
         }

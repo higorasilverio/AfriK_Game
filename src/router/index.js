@@ -22,14 +22,12 @@ export default new Router({
     {
       path: '/words',
       name: 'words',
-      component: Words,
-      props: true
+      component: Words
     },
     {
       path: '/game',
       name: 'game',
-      component: Game,
-      props: true
+      component: Game
     }
   ]
 })

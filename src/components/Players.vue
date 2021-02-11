@@ -276,7 +276,8 @@ export default {
       this.black = this.black.slice(0, blackTeamSize)
     },
     goToWords () {
-      this.$router.push({ name: 'words', params: { white: this.white, black: this.black } })
+      this.$session.set('Teams', { 'white': this.white, 'black': this.black })
+      this.$router.push('/words')
     }
   }
 }

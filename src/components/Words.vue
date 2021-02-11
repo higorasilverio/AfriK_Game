@@ -26,7 +26,6 @@
 <script>
 export default {
   name: 'words',
-  props: ['black', 'white'],
   data () {
     return {
       players: [],
@@ -37,7 +36,9 @@ export default {
     }
   },
   mounted () {
-    this.players = this.white.concat(this.black)
+    let blackTeam = this.$session.get('Teams').black
+    let whiteTeam = this.$session.get('Teams').white
+    this.players = whiteTeam.concat(blackTeam)
     this.currentPlayer = this.players[this.currentNumber]
   },
   methods: {
@@ -67,7 +68,8 @@ export default {
       })
     },
     goToGame () {
-      this.$router.push({ name: 'game', params: { allWords: this.allWords, black: this.black, white: this.white } })
+      this.$session.set('Words', this.allWords)
+      this.$router.push('/game')
     }
   }
 
