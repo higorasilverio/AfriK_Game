@@ -34,6 +34,52 @@
         </div>
       </div>
     </div>
+    <b-modal id="modal-black-team-won" centered hide-footer hide-header no-close-on-backdrop no-close-on-esc>
+      <div style="display: flex; flex-direction: column; justify-content: space-evenly; align-items: center;">
+        <h5>Congratulations,</h5>
+        <h2 style="margin: 5vh 0;">Black Team</h2>
+        <h5>You are AfriK champion!</h5>
+        <b-button variant="dark" style="margin: 5vh 0 2vh 0;" v-on:click="$router.push('Home')">Play again</b-button>
+      </div>
+    </b-modal>
+    <b-modal id="modal-white-team-won" centered hide-footer hide-header no-close-on-backdrop no-close-on-esc>
+      <div style="display: flex; flex-direction: column; justify-content: space-evenly; align-items: center;">
+        <h5>Congratulations,</h5>
+        <h2 style="margin: 5vh 0;">White Team</h2>
+        <h5>You are AfriK champion!</h5>
+        <b-button variant="dark" style="margin: 5vh 0 2vh 0;" v-on:click="$router.push('Home')">Play again</b-button>
+      </div>
+    </b-modal>
+    <b-modal id="modal-draw-game" centered hide-footer hide-header no-close-on-backdrop no-close-on-esc>
+      <div style="display: flex; flex-direction: column; justify-content: space-evenly; align-items: center;">
+        <h2>It is a draw!</h2>
+        <h5 style="margin: 5vh 0 0 0;">Play again to find out</h5>
+        <h5 style="margin: 0 0 5vh 0;">who is the AfriK champion!</h5>
+        <b-button variant="dark" style="margin: 5vh 0 2vh 0;" v-on:click="$router.push('Home')">Play again</b-button>
+      </div>
+    </b-modal>
+    <b-modal id="modal-time-is-up" centered hide-footer hide-header no-close-on-backdrop no-close-on-esc>
+      <div style="display: flex; flex-direction: column; justify-content: space-evenly; align-items: center;">
+        <h2>Time is up!</h2>
+        <h5 style="margin: 3vh 0 1vh 0;">Now, it is time for the </h5>
+        <h3 style="margin: 0;">{{ currentTeam }} Team</h3>
+        <h5 style="margin: 1vh 0 3vh 0;">to play!</h5>
+        <b-button variant="dark" style="margin: 5vh 0 2vh 0;" v-on:click="$bvModal.hide('modal-time-is-up')">
+          Understood
+        </b-button>
+      </div>
+    </b-modal>
+    <b-modal id="modal-round-over" centered hide-footer hide-header no-close-on-backdrop no-close-on-esc>
+      <div style="display: flex; flex-direction: column; justify-content: space-evenly; align-items: center;">
+        <h2>Round is over!</h2>
+        <h5 style="margin: 3vh 0 1vh 0;">Now, it is time for the </h5>
+        <h3 style="margin: 0;">{{ currentTeam }} Team</h3>
+        <h5 style="margin: 1vh 0 3vh 0;">to play the next round!</h5>
+        <b-button variant="dark" style="margin: 5vh 0 2vh 0;" v-on:click="$bvModal.hide('modal-round-over')">
+          Understood
+        </b-button>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -54,8 +100,9 @@ export default {
       whiteRoundsWon: 0,
       blackRoundsWon: 0,
       currentWord: '',
-      currentTeam: 'white',
-      currentPlayer: ''
+      currentTeam: 'White',
+      currentPlayer: '',
+      timeControl: false
     }
   },
   mounted: function () {
@@ -69,6 +116,17 @@ export default {
   computed: {
     timer () {
       return this.$store.state.timerVerify
+    }
+  },
+  watch: {
+    timer: function () {
+      if (this.timeControl === true) {
+        this.timeControl = false
+        this.currentTeam = this.currentTeam === 'White' ? 'Black' : 'White'
+        this.currentPlayer = this.currentTeam === 'White' ? this.white[0] : this.black[0]
+        // console.log(this.gameWords)
+        // if (this.gameWords.length !== 0) this.$bvModal.show('modal-time-is-up')
+      } else this.timeControl = true
     }
   },
   methods: {
@@ -97,34 +155,32 @@ export default {
       return this.gameWords[Math.floor(Math.random() * this.gameWords.length)]
     },
     gotItRight () {
-      this.currentTeam === 'white' ? this.whiteScore++ : this.blackScore++
+      this.currentTeam === 'White' ? this.whiteScore++ : this.blackScore++
       let toRemoveIndex = this.gameWords.findIndex(found => found === this.currentWord)
       if (toRemoveIndex > -1) this.gameWords.splice(toRemoveIndex, 1)
       this.checkRoundGame(this.gameWords.length)
-      this.currentTeam === 'white' ? this.handleWhitePlayer() : this.handleBlackPlayer()
+      this.currentTeam === 'White' ? this.handleWhitePlayer() : this.handleBlackPlayer()
       this.currentWord = this.pickRandomWord()
     },
     checkRoundGame (length) {
       if (length === 0) {
-        this.blackScore > this.whiteScore ? this.blackRoundsWon++ : this.whiteRoundsWon++
+        if (this.blackScore > this.whiteScore) this.blackRoundsWon++
+        if (this.blackScore < this.whiteScore) this.whiteRoundsWon++
         this.whiteScore = 0
         this.blackScore = 0
         this.$store.commit('UPDATE_TIMER_VERIFY', true)
         this.round++
         if (this.round !== 4) {
-          alert('Round over')
-          this.currentTeam = this.currentTeam === 'white' ? 'black' : 'white'
-          this.currentPlayer = this.currentTeam === 'white' ? this.white[0] : this.black[0]
+          this.$bvModal.show('modal-round-over')
           this.gameWords = this.$session.get('Words')
           this.randomAllWords()
           this.currentWord = this.pickRandomWord()
         }
       }
       if (this.round === 4) {
-        if (this.blackRoundsWon > this.whiteRoundsWon) console.log('Black Team Won!')
-        if (this.blackRoundsWon < this.whiteRoundsWon) console.log('White Team Won!')
-        if (this.blackRoundsWon === this.whiteRoundsWon) console.log('It is a Draw!')
-        alert('Game Over')
+        if (this.blackRoundsWon > this.whiteRoundsWon) this.$bvModal.show('modal-black-team-won')
+        if (this.blackRoundsWon < this.whiteRoundsWon) this.$bvModal.show('modal-white-team-won')
+        if (this.blackRoundsWon === this.whiteRoundsWon) this.$bvModal.show('modal-draw-game')
       }
     },
     handleWhitePlayer () {

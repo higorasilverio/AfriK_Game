@@ -21,12 +21,12 @@ export default new Router({
     },
     {
       path: '/words',
-      name: 'words',
+      name: 'Words',
       component: Words
     },
     {
       path: '/game',
-      name: 'game',
+      name: 'Game',
       component: Game
     }
   ]
