@@ -11,6 +11,10 @@ import VueSession from 'vue-session'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+import 'es6-promise/auto'
+
+import store from './store/store'
+
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(Vue2TouchEvents)
@@ -26,5 +30,6 @@ new Vue({
   el: '#app',
   router,
   template: '<App/>',
+  store,
   components: { App }
 })

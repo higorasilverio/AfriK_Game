@@ -1,6 +1,6 @@
 <template>
   <div class="game">
-    <div v-if="setting">
+    <div v-if="timer">
       <div class="background-hold centered">
         <h4 class="main-color">We are all set to start!</h4>
         <h4 class="main-color">Are you ready?</h4>
@@ -46,7 +46,6 @@ export default {
   },
   data () {
     return {
-      setting: true,
       show: false,
       gameWords: [],
       round: 1,
@@ -63,14 +62,18 @@ export default {
     this.white = this.$session.get('Teams').white
     this.black = this.$session.get('Teams').black
     this.gameWords = this.$session.get('Words')
-    console.log(this.gameWords)
     this.randomAllWords()
     this.currentPlayer = this.white[0]
     this.currentWord = this.pickRandomWord()
   },
+  computed: {
+    timer () {
+      return this.$store.state.timerVerify
+    }
+  },
   methods: {
     start () {
-      this.setting = false
+      this.$store.commit('UPDATE_TIMER_VERIFY', false)
     },
     startHandler () {
       this.show = true
@@ -106,14 +109,13 @@ export default {
         this.blackScore > this.whiteScore ? this.blackRoundsWon++ : this.whiteRoundsWon++
         this.whiteScore = 0
         this.blackScore = 0
-        this.setting = true
+        this.$store.commit('UPDATE_TIMER_VERIFY', true)
         this.round++
         if (this.round !== 4) {
           alert('Round over')
           this.currentTeam = this.currentTeam === 'white' ? 'black' : 'white'
           this.currentPlayer = this.currentTeam === 'white' ? this.white[0] : this.black[0]
           this.gameWords = this.$session.get('Words')
-          console.log(this.gameWords)
           this.randomAllWords()
           this.currentWord = this.pickRandomWord()
         }

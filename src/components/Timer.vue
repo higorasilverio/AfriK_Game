@@ -1,6 +1,6 @@
 <template>
     <div>
-        <vac :left-time="60000" :auto-start="false" ref="vac2" @start="start" @finish="finish">
+        <vac :left-time="10000" :auto-start="false" ref="vac2" @start="start" @finish="finish">
         <span
             slot="process"
             slot-scope="{ timeObj }">
@@ -29,6 +29,7 @@ export default {
       console.log('start')
     },
     finish () {
+      this.$store.commit('UPDATE_TIMER_VERIFY', true)
       console.log('finish')
     }
   }
