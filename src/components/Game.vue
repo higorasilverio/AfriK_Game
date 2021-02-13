@@ -1,81 +1,74 @@
 <template>
   <div class="game">
-    <div v-if="timer">
-      <div class="background-hold centered">
-        <h4 class="main-color">We are all set to start!</h4>
+    <div v-if="timer" class="background-hold-timer">
+      <div>
         <h4 class="main-color">Are you ready?</h4>
       </div>
-      <div class="background-hold centered" v-on:click="start">
-        <h6 class="main-color">Click here to start playing</h6>
-        <span class="fingerprint-icon material-icons">fingerprint</span>
+      <div v-on:click="start">
+        <h5 class="main-color">Press to play</h5>
+        <span class="fingerprint-icon material-icons main-color">fingerprint</span>
       </div>
-      <div class="background-hold container-column">
-        <h6>Team: {{ currentTeam }}</h6>
-        <h6>Player: {{ currentPlayer }}</h6>
+      <div v-bind:class="[currentTeam === 'White' ? 'wtclass' : 'btclass' ]">
+        <h5 class="main-color">{{ currentTeam }} Team</h5>
+        <h5 class="main-color"><b-icon icon="person"/> {{ currentPlayer }}</h5>
       </div>
     </div>
-    <div v-else class="container-column height-content">
-      <div class="background-hold container-column">
-        <div><h5 v-if="show">{{ currentWord }}</h5></div>
-      </div>
-      <div class="background-hold" v-touch:start="startHandler" v-touch:end="endHandler">
-        <h6>Reveal word:</h6>
-        <h6 class="fingerprint-icon material-icons">fingerprint</h6>
-      </div>
-      <div style="display: flex; flex-direction: row;">
-        <div class="background-hold-row">
-          <Timer />
+    <div v-else class="background-hold-game">
+      <div class="round-score">
+        <h6>Round score</h6>
+        <div class="round-score-teams">
+          <div class="score-white"><h6> White: {{whiteScore}}</h6></div>
+          <h6>X</h6>
+          <div class="score-black"><h6> Black: {{blackScore}}</h6></div>
         </div>
-        <div class="background-hold-row">
-          <b-button variant="outline-dark" v-on:click="gotItRight">
+        <hr>
+        <h6>Current player: {{ currentPlayer }}</h6>
+      </div>
+      <div class="current-word">
+        <h5 v-if="show" class="main-color">{{ currentWord }}</h5>
+        <h5 v-else class="main-color">?</h5>
+      </div>
+      <div v-touch:start="startHandler" v-touch:end="endHandler">
+        <h5 class="main-color">Reveal word</h5>
+        <h5 class="fingerprint-icon material-icons main-color">fingerprint</h5>
+      </div>
+      <div class="stopwatch-button">
+        <div class="stopwatch-align">
+            <div class="timer-align-style">
+             <h2 class="main-color"><Timer /></h2>
+            </div>
+        </div>
+        <div class="button-align">
+          <b-button class="main-color" variant="outline-dark" v-on:click="gotItRight">
             Got it right 
             <b-icon icon="check2-all">
           </b-icon></b-button>
         </div>
       </div>
     </div>
-    <b-modal id="modal-black-team-won" centered hide-footer hide-header no-close-on-backdrop no-close-on-esc>
+    <b-modal id="modal-team-won" centered hide-footer hide-header no-close-on-backdrop no-close-on-esc>
       <div style="display: flex; flex-direction: column; justify-content: space-evenly; align-items: center;">
-        <h5>Congratulations,</h5>
-        <h2 style="margin: 5vh 0;">Black Team</h2>
-        <h5>You are AfriK champion!</h5>
-        <b-button variant="dark" style="margin: 5vh 0 2vh 0;" v-on:click="$router.push('Home')">Play again</b-button>
-      </div>
-    </b-modal>
-    <b-modal id="modal-white-team-won" centered hide-footer hide-header no-close-on-backdrop no-close-on-esc>
-      <div style="display: flex; flex-direction: column; justify-content: space-evenly; align-items: center;">
-        <h5>Congratulations,</h5>
-        <h2 style="margin: 5vh 0;">White Team</h2>
-        <h5>You are AfriK champion!</h5>
-        <b-button variant="dark" style="margin: 5vh 0 2vh 0;" v-on:click="$router.push('Home')">Play again</b-button>
+        <h5 class="main-color">Congratulations,</h5>
+        <h2 class="main-color" style="margin: 5vh 0;">{{ champion }}</h2>
+        <h5 class="main-color">You are AfriK champion!</h5>
+        <b-button class="main-color" :disabled="disabled" variant="dark" style="margin: 5vh 0 2vh 0;" v-on:click="$router.push('/')">Play again</b-button>
       </div>
     </b-modal>
     <b-modal id="modal-draw-game" centered hide-footer hide-header no-close-on-backdrop no-close-on-esc>
       <div style="display: flex; flex-direction: column; justify-content: space-evenly; align-items: center;">
-        <h2>It is a draw!</h2>
-        <h5 style="margin: 5vh 0 0 0;">Play again to find out</h5>
-        <h5 style="margin: 0 0 5vh 0;">who is the AfriK champion!</h5>
-        <b-button variant="dark" style="margin: 5vh 0 2vh 0;" v-on:click="$router.push('Home')">Play again</b-button>
+        <h2 class="main-color">It is a draw!</h2>
+        <h5 class="main-color" style="margin: 5vh 0 0 0;">Play again to find out</h5>
+        <h5 class="main-color" style="margin: 0 0 5vh 0;">who is the AfriK champion!</h5>
+        <b-button class="main-color" :disabled="disabled" variant="dark" style="margin: 5vh 0 2vh 0;" v-on:click="$router.push('/')">Play again</b-button>
       </div>
     </b-modal>
-    <b-modal id="modal-time-is-up" centered hide-footer hide-header no-close-on-backdrop no-close-on-esc>
+    <b-modal id="modal-round-time" centered hide-footer hide-header no-close-on-backdrop no-close-on-esc>
       <div style="display: flex; flex-direction: column; justify-content: space-evenly; align-items: center;">
-        <h2>Time is up!</h2>
-        <h5 style="margin: 3vh 0 1vh 0;">Now, it is time for the </h5>
-        <h3 style="margin: 0;">{{ currentTeam }} Team</h3>
-        <h5 style="margin: 1vh 0 3vh 0;">to play!</h5>
-        <b-button variant="dark" style="margin: 5vh 0 2vh 0;" v-on:click="$bvModal.hide('modal-time-is-up')">
-          Understood
-        </b-button>
-      </div>
-    </b-modal>
-    <b-modal id="modal-round-over" centered hide-footer hide-header no-close-on-backdrop no-close-on-esc>
-      <div style="display: flex; flex-direction: column; justify-content: space-evenly; align-items: center;">
-        <h2>Round is over!</h2>
-        <h5 style="margin: 3vh 0 1vh 0;">Now, it is time for the </h5>
-        <h3 style="margin: 0;">{{ currentTeam }} Team</h3>
-        <h5 style="margin: 1vh 0 3vh 0;">to play the next round!</h5>
-        <b-button variant="dark" style="margin: 5vh 0 2vh 0;" v-on:click="$bvModal.hide('modal-round-over')">
+        <h2 class="main-color">{{ modalMessageHeader }}</h2>
+        <h5 class="main-color" style="margin: 3vh 0 1vh 0;">Now, it is time for the </h5>
+        <h3 class="main-color" style="margin: 0;">{{ currentTeam }} Team</h3>
+        <h5 class="main-color" style="margin: 1vh 0 3vh 0;">{{ modalMessageFooter }}</h5>
+        <b-button class="main-color" :disabled="disabled" variant="dark" style="margin: 5vh 0 2vh 0;" v-on:click="closeModal">
           Understood
         </b-button>
       </div>
@@ -102,7 +95,12 @@ export default {
       currentWord: '',
       currentTeam: 'White',
       currentPlayer: '',
-      timeControl: false
+      timeControl: false,
+      roundControl: false,
+      disabled: true,
+      champion: '',
+      modalMessageHeader: '',
+      modalMessageFooter: ''
     }
   },
   mounted: function () {
@@ -124,8 +122,9 @@ export default {
         this.timeControl = false
         this.currentTeam = this.currentTeam === 'White' ? 'Black' : 'White'
         this.currentPlayer = this.currentTeam === 'White' ? this.white[0] : this.black[0]
-        // console.log(this.gameWords)
-        // if (this.gameWords.length !== 0) this.$bvModal.show('modal-time-is-up')
+        if (this.roundControl === false) {
+          this.callModal(true)
+        } else this.roundControl = false
       } else this.timeControl = true
     }
   },
@@ -168,19 +167,31 @@ export default {
         if (this.blackScore < this.whiteScore) this.whiteRoundsWon++
         this.whiteScore = 0
         this.blackScore = 0
+        this.roundControl = true
         this.$store.commit('UPDATE_TIMER_VERIFY', true)
         this.round++
         if (this.round !== 4) {
-          this.$bvModal.show('modal-round-over')
+          this.callModal(false)
           this.gameWords = this.$session.get('Words')
           this.randomAllWords()
           this.currentWord = this.pickRandomWord()
         }
       }
       if (this.round === 4) {
-        if (this.blackRoundsWon > this.whiteRoundsWon) this.$bvModal.show('modal-black-team-won')
-        if (this.blackRoundsWon < this.whiteRoundsWon) this.$bvModal.show('modal-white-team-won')
-        if (this.blackRoundsWon === this.whiteRoundsWon) this.$bvModal.show('modal-draw-game')
+        if (this.blackRoundsWon > this.whiteRoundsWon) {
+          this.champion = 'Black Team'
+          this.$bvModal.show('modal-team-won')
+          this.buttonDisable()
+        }
+        if (this.blackRoundsWon < this.whiteRoundsWon) {
+          this.champion = 'White Team'
+          this.$bvModal.show('modal-team-won')
+          this.buttonDisable()
+        }
+        if (this.blackRoundsWon === this.whiteRoundsWon) {
+          this.$bvModal.show('modal-draw-game')
+          this.buttonDisable()
+        }
       }
     },
     handleWhitePlayer () {
@@ -192,6 +203,23 @@ export default {
       let blackPlayerIndex = this.black.findIndex(found => found === this.currentPlayer)
       this.currentPlayer =
         this.black.length === blackPlayerIndex + 1 ? this.currentPlayer = this.black[0] : this.black[blackPlayerIndex + 1]
+    },
+    callModal (isItTimer) {
+      this.modalMessageHeader = isItTimer ? 'Time is up!' : 'Round is over!'
+      this.modalMessageFooter = isItTimer ? 'to play!' : 'to play the next round!'
+      this.$bvModal.show('modal-round-time')
+      this.buttonDisable()
+    },
+    closeModal () {
+      this.$bvModal.hide('modal-round-time')
+      this.buttonDisable()
+    },
+    buttonDisable () {
+      if (this.disabled === true) {
+        setTimeout(() => {
+          this.disabled = false
+        }, 5000)
+      } else this.disabled = true
     }
   }
 }
@@ -211,52 +239,136 @@ export default {
   text-align: center;
 }
 
-.background-hold{
+.background-hold-game{
   background-color: #FFF; 
   border-radius: 10px; 
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px; 
-  width: 80%; 
+  min-width: 90%; 
+  min-height: 70vh;
   margin: 0 auto; 
   padding: 3%; 
   -webkit-box-shadow: 5px 5px #CCC; 
   box-shadow: 5px 5px #CCC;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-around;
 }
 
-.background-hold-row{
-  background-color: #FFF; 
+.wtclass {
+  -webkit-box-shadow: 5px 5px 20px #CCC; 
+  box-shadow: 5px 5px 20px #CCC;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  padding: 3%;
+}
+
+.btclass {
+  background-color: #343a40;
+  color: #FFF;
+  -webkit-box-shadow: 5px 5px 20px #CCC;
+  box-shadow: 5px 5px 20px #CCC;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  padding: 3%;
+}
+
+.current-word {
   border-radius: 10px; 
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px; 
-  margin: 0 auto; 
-  padding: 3%; 
-  -webkit-box-shadow: 5px 5px #CCC; 
-  box-shadow: 5px 5px #CCC;
+  min-width: 80%; 
+  min-height: 10vh;
+  margin: 0 auto;
+  -webkit-box-shadow: 5px 5px 20px #CCC;
+  box-shadow: 5px 5px 20px #CCC;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.stopwatch-button {
+  border-radius: 10px; 
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px; 
+  min-width: 95%; 
+  min-height: 15vh;
+  -webkit-box-shadow: 5px 5px 20px #CCC;
+  box-shadow: 5px 5px 20px #CCC;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
 }
 
-.container-column{
+.round-score {
+  border-radius: 10px; 
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px; 
+  min-width: 95%;
+  -webkit-box-shadow: 5px 5px 20px #CCC;
+  box-shadow: 5px 5px 20px #CCC;
+  padding: 1vh 0;
+}
+
+.round-score-teams {
+  display: flex; 
+  flex-direction: row; 
+  justify-content: space-around;
+}
+
+.score-black {
+  padding: 1% 3%;
+  background-color: #343a40;
+  color: #FFF;
+  border-radius: 10px; 
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-box-shadow: 2px 2px 10px #CCC;
+  box-shadow: 2px 2px 10px #CCC;
+}
+
+.score-white {
+  padding: 1% 3%;
+  color: #343a40;
+  border-radius: 10px; 
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-box-shadow: 2px 2px 10px #CCC;
+  box-shadow: 2px 2px 10px #CCC;
+}
+
+.stopwatch-align {
+  margin: auto 0;
+  width: 9vh;
+  height: 9vh;
+  border: 2px solid #000;
+  border-radius: 50%; 
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
-.height-content {
-  height: 70vh;
+.button-align {
+  margin: auto 0;
 }
 
-.centered{ 
-  margin: 2vh auto; 
-  flex-direction: column;
+.timer-align-style {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .main-color{
   color: #343a40;
+}
+
+hr {
+ width: 50%;
 }
 
 .fingerprint-icon{
