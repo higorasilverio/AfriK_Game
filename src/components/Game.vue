@@ -1,6 +1,6 @@
 <template>
   <div class="game">
-    <div v-if="timer" class="background-hold-timer">
+    <div v-if="timer" class="background-hold-game">
       <div>
         <h4 class="main-color">Are you ready?</h4>
       </div>
@@ -9,12 +9,12 @@
         <span class="fingerprint-icon material-icons main-color">fingerprint</span>
       </div>
       <div v-bind:class="[currentTeam === 'White' ? 'wtclass' : 'btclass' ]">
-        <h5 class="main-color">{{ currentTeam }} Team</h5>
-        <h5 class="main-color"><b-icon icon="person"/> {{ currentPlayer }}</h5>
+        <h5>{{ currentTeam }} Team</h5>
+        <h5><b-icon icon="person"/> {{ currentPlayer }}</h5>
       </div>
     </div>
     <div v-else class="background-hold-game">
-      <div class="round-score">
+      <div>
         <h6>Round score</h6>
         <div class="round-score-teams">
           <div class="score-white"><h6> White: {{whiteScore}}</h6></div>
@@ -39,7 +39,7 @@
             </div>
         </div>
         <div class="button-align">
-          <b-button class="main-color" variant="outline-dark" v-on:click="gotItRight">
+          <b-button :disabled="nextPlayer" class="main-color" variant="outline-dark" v-on:click="gotItRight">
             Got it right 
             <b-icon icon="check2-all">
           </b-icon></b-button>
@@ -51,7 +51,7 @@
         <h5 class="main-color">Congratulations,</h5>
         <h2 class="main-color" style="margin: 5vh 0;">{{ champion }}</h2>
         <h5 class="main-color">You are AfriK champion!</h5>
-        <b-button class="main-color" :disabled="disabled" variant="dark" style="margin: 5vh 0 2vh 0;" v-on:click="$router.push('/')">Play again</b-button>
+        <b-button :disabled="disabled" variant="dark" style="margin: 5vh 0 2vh 0;" v-on:click="$router.push('/')">Play again</b-button>
       </div>
     </b-modal>
     <b-modal id="modal-draw-game" centered hide-footer hide-header no-close-on-backdrop no-close-on-esc>
@@ -59,7 +59,7 @@
         <h2 class="main-color">It is a draw!</h2>
         <h5 class="main-color" style="margin: 5vh 0 0 0;">Play again to find out</h5>
         <h5 class="main-color" style="margin: 0 0 5vh 0;">who is the AfriK champion!</h5>
-        <b-button class="main-color" :disabled="disabled" variant="dark" style="margin: 5vh 0 2vh 0;" v-on:click="$router.push('/')">Play again</b-button>
+        <b-button :disabled="disabled" variant="dark" style="margin: 5vh 0 2vh 0;" v-on:click="$router.push('/')">Play again</b-button>
       </div>
     </b-modal>
     <b-modal id="modal-round-time" centered hide-footer hide-header no-close-on-backdrop no-close-on-esc>
@@ -68,11 +68,29 @@
         <h5 class="main-color" style="margin: 3vh 0 1vh 0;">Now, it is time for the </h5>
         <h3 class="main-color" style="margin: 0;">{{ currentTeam }} Team</h3>
         <h5 class="main-color" style="margin: 1vh 0 3vh 0;">{{ modalMessageFooter }}</h5>
-        <b-button class="main-color" :disabled="disabled" variant="dark" style="margin: 5vh 0 2vh 0;" v-on:click="closeModal">
+        <b-button :disabled="disabled" variant="dark" style="margin: 5vh 0 2vh 0;" v-on:click="closeModal">
           Understood
         </b-button>
       </div>
     </b-modal>
+    <audio id="correct-audio">
+      <source src="../assets/correct.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="draw-audio">
+      <source src="../assets/draw.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="endround-audio">
+      <source src="../assets/endround.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="timeisup-audio">
+      <source src="../assets/timeisup.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="won-audio">
+      <source src="../assets/won.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="alarm-audio">
+      <source src="../assets/alarm.mp3" type="audio/mpeg">
+    </audio>
   </div>
 </template>
 
@@ -98,6 +116,7 @@ export default {
       timeControl: false,
       roundControl: false,
       disabled: true,
+      nextPlayer: false,
       champion: '',
       modalMessageHeader: '',
       modalMessageFooter: ''
@@ -123,6 +142,7 @@ export default {
         this.currentTeam = this.currentTeam === 'White' ? 'Black' : 'White'
         this.currentPlayer = this.currentTeam === 'White' ? this.white[0] : this.black[0]
         if (this.roundControl === false) {
+          this.playAudio('alarm')
           this.callModal(true)
         } else this.roundControl = false
       } else this.timeControl = true
@@ -154,6 +174,11 @@ export default {
       return this.gameWords[Math.floor(Math.random() * this.gameWords.length)]
     },
     gotItRight () {
+      if (this.gameWords.length > 1) this.playAudio('correct')
+      this.nextPlayer = true
+      setTimeout(() => {
+        this.nextPlayer = false
+      }, 3000)
       this.currentTeam === 'White' ? this.whiteScore++ : this.blackScore++
       let toRemoveIndex = this.gameWords.findIndex(found => found === this.currentWord)
       if (toRemoveIndex > -1) this.gameWords.splice(toRemoveIndex, 1)
@@ -171,6 +196,7 @@ export default {
         this.$store.commit('UPDATE_TIMER_VERIFY', true)
         this.round++
         if (this.round !== 4) {
+          this.playAudio('endround')
           this.callModal(false)
           this.gameWords = this.$session.get('Words')
           this.randomAllWords()
@@ -179,16 +205,19 @@ export default {
       }
       if (this.round === 4) {
         if (this.blackRoundsWon > this.whiteRoundsWon) {
+          this.playAudio('won')
           this.champion = 'Black Team'
           this.$bvModal.show('modal-team-won')
           this.buttonDisable()
         }
         if (this.blackRoundsWon < this.whiteRoundsWon) {
+          this.playAudio('won')
           this.champion = 'White Team'
           this.$bvModal.show('modal-team-won')
           this.buttonDisable()
         }
         if (this.blackRoundsWon === this.whiteRoundsWon) {
+          this.playAudio('draw')
           this.$bvModal.show('modal-draw-game')
           this.buttonDisable()
         }
@@ -220,6 +249,14 @@ export default {
           this.disabled = false
         }, 5000)
       } else this.disabled = true
+    },
+    playAudio (value) {
+      if (value === 'correct') document.getElementById('correct-audio').play()
+      if (value === 'draw') document.getElementById('draw-audio').play()
+      if (value === 'endround') document.getElementById('endround-audio').play()
+      if (value === 'timeisup') document.getElementById('timeisup-audio').play()
+      if (value === 'won') document.getElementById('won-audio').play()
+      if (value === 'alarm') document.getElementById('alarm-audio').play()
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <vac :left-time="10000" :auto-start="false" ref="vac2" @start="start" @finish="finish">
+        <vac :left-time="60000" :auto-start="false" ref="vac2" @start="start" @finish="finish">
         <span
             slot="process"
             slot-scope="{ timeObj }">
