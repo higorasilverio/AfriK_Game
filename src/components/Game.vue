@@ -28,9 +28,8 @@
         <h5 v-if="show" class="main-color">{{ currentWord }}</h5>
         <h5 v-else class="main-color">?</h5>
       </div>
-      <div v-touch:start="startHandler" v-touch:end="endHandler">
-        <h5 class="main-color">Reveal word</h5>
-        <h5 class="fingerprint-icon material-icons main-color">fingerprint</h5>
+      <div>
+        <b-button variant="outline-dark" v-touch:start="startHandler" v-touch:end="endHandler">Reveal word</b-button>
       </div>
       <div class="stopwatch-button">
         <div class="stopwatch-align">

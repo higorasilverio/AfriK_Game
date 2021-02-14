@@ -24,14 +24,15 @@ body {
   background-image: url("assets/things_02.png");
   background-repeat: repeat;
   background-position: center;
-  background-size: 100vh;
+  background-size: 110vh;
   background-color: #cccccc;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
 #app header {
-  position: absolute;
-  top: 0;
   height: 13vh;
   background-color: #343a40;
   color: #fff;
@@ -45,9 +46,7 @@ body {
 }
 
 #app main {
-  position: absolute;
   height: 77vh;
-  top: 14vh;
   background-color: rgba(255, 255, 255, 0.95);
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -57,9 +56,7 @@ body {
 }
 
 #app footer {
-  position: absolute;
   background-color: #fff;
-  bottom: 0;
   -webkit-border-radius: 15px;
   -moz-border-radius: 15px;
   border-radius: 15px;
