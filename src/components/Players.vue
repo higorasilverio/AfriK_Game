@@ -24,19 +24,19 @@
           <div class="team">WHITE TEAM</div>
           <div class="container-column">
             <div class="spacing">
-              <b-form-input class="alignment" v-model="white[0]" size="sm" placeholder="Player 1"></b-form-input>
+              <b-form-input v-on:keydown.space.prevent v-on:blur="nominate('w', 0)" class="alignment" v-model="white[0]" size="sm" placeholder="Player 1" />
             </div>
             <div class="spacing">
-              <b-form-input class="alignment" v-model="white[1]" size="sm" placeholder="Player 2"></b-form-input>
+              <b-form-input v-on:keydown.space.prevent v-on:blur="nominate('w', 1)" class="alignment" v-model="white[1]" size="sm" placeholder="Player 2" />
             </div>
             <div v-if="players > 4" class="spacing">
-              <b-form-input class="alignment" v-model="white[2]" size="sm" placeholder="Player 3"></b-form-input>
+              <b-form-input v-on:keydown.space.prevent v-on:blur="nominate('w', 2)" class="alignment" v-model="white[2]" size="sm" placeholder="Player 3" />
             </div>
             <div v-if="players > 6" class="spacing">
-              <b-form-input class="alignment" v-model="white[3]" size="sm" placeholder="Player 4"></b-form-input>
+              <b-form-input v-on:keydown.space.prevent v-on:blur="nominate('w', 3)" class="alignment" v-model="white[3]" size="sm" placeholder="Player 4" />
             </div>
             <div v-if="players > 8" class="spacing">
-              <b-form-input class="alignment" v-model="white[4]" size="sm" placeholder="Player 5"></b-form-input>
+              <b-form-input v-on:keydown.space.prevent v-on:blur="nominate('w', 4)" class="alignment" v-model="white[4]" size="sm" placeholder="Player 5" />
             </div>
           </div>
         </div>
@@ -44,19 +44,19 @@
           <div class="team">BLACK TEAM</div>
           <div class="container-column">
             <div class="spacing">
-              <b-form-input class="alignment" v-model="black[0]" size="sm" placeholder="Player 1"></b-form-input>
+              <b-form-input v-on:keydown.space.prevent v-on:blur="nominate('b', 0)" class="alignment" v-model="black[0]" size="sm" placeholder="Player 1" />
             </div>
             <div class="spacing">
-              <b-form-input class="alignment" v-model="black[1]" size="sm" placeholder="Player 2"></b-form-input>
+              <b-form-input v-on:keydown.space.prevent v-on:blur="nominate('b', 1)" class="alignment" v-model="black[1]" size="sm" placeholder="Player 2" />
             </div>
             <div v-if="players > 5" class="spacing">
-              <b-form-input class="alignment" v-model="black[2]" size="sm" placeholder="Player 3"></b-form-input>
+              <b-form-input v-on:keydown.space.prevent v-on:blur="nominate('b', 2)" class="alignment" v-model="black[2]" size="sm" placeholder="Player 3" />
             </div>
             <div v-if="players > 7" class="spacing">
-              <b-form-input class="alignment" v-model="black[3]" size="sm" placeholder="Player 4"></b-form-input>
+              <b-form-input v-on:keydown.space.prevent v-on:blur="nominate('b', 3)" class="alignment" v-model="black[3]" size="sm" placeholder="Player 4" />
             </div>
             <div v-if="players > 9" class="spacing">
-              <b-form-input class="alignment" v-model="black[4]" size="sm" placeholder="Player 5"></b-form-input>
+              <b-form-input v-on:keydown.space.prevent v-on:blur="nominate('b', 4)" class="alignment" v-model="black[4]" size="sm" placeholder="Player 5" />
             </div>
           </div>
         </div>
@@ -65,34 +65,34 @@
         <div class="container-row">
           <div class="container-column">
             <div class="spacing">
-              <b-form-input class="alignment" v-model="random[0]" size="sm" placeholder="Player 1"></b-form-input>
+              <b-form-input v-on:keydown.space.prevent v-on:blur="nominate('r', 0)" class="alignment" v-model="random[0]" size="sm" placeholder="Player 1" />
             </div>
             <div class="spacing">
-              <b-form-input class="alignment" v-model="random[1]" size="sm" placeholder="Player 2"></b-form-input>
+              <b-form-input v-on:keydown.space.prevent v-on:blur="nominate('r', 1)" class="alignment" v-model="random[1]" size="sm" placeholder="Player 2" />
             </div>
             <div class="spacing">
-              <b-form-input class="alignment" v-model="random[2]" size="sm" placeholder="Player 3"></b-form-input>
+              <b-form-input v-on:keydown.space.prevent v-on:blur="nominate('r', 2)" class="alignment" v-model="random[2]" size="sm" placeholder="Player 3" />
             </div>
             <div class="spacing">
-              <b-form-input class="alignment" v-model="random[3]" size="sm" placeholder="Player 4"></b-form-input>
+              <b-form-input v-on:keydown.space.prevent v-on:blur="nominate('r', 3)" class="alignment" v-model="random[3]" size="sm" placeholder="Player 4" />
             </div>
             <div v-if="players > 4" class="spacing">
-              <b-form-input class="alignment" v-model="random[4]" size="sm" placeholder="Player 5"></b-form-input>
+              <b-form-input v-on:keydown.space.prevent v-on:blur="nominate('r', 4)" class="alignment" v-model="random[4]" size="sm" placeholder="Player 5" />
             </div>
             <div v-if="players > 5" class="spacing">
-              <b-form-input class="alignment" v-model="random[5]" size="sm" placeholder="Player 6"></b-form-input>
+              <b-form-input v-on:keydown.space.prevent v-on:blur="nominate('r', 5)" class="alignment" v-model="random[5]" size="sm" placeholder="Player 6" />
             </div>
             <div v-if="players > 6" class="spacing">
-              <b-form-input class="alignment" v-model="random[6]" size="sm" placeholder="Player 7"></b-form-input>
+              <b-form-input v-on:keydown.space.prevent v-on:blur="nominate('r', 6)" class="alignment" v-model="random[6]" size="sm" placeholder="Player 7" />
             </div>
             <div v-if="players > 7" class="spacing">
-              <b-form-input class="alignment" v-model="random[7]" size="sm" placeholder="Player 8"></b-form-input>
+              <b-form-input v-on:keydown.space.prevent v-on:blur="nominate('r', 7)" class="alignment" v-model="random[7]" size="sm" placeholder="Player 8" />
             </div>
             <div v-if="players > 8" class="spacing">
-              <b-form-input class="alignment" v-model="random[8]" size="sm" placeholder="Player 9"></b-form-input>
+              <b-form-input v-on:keydown.space.prevent v-on:blur="nominate('r', 8)" class="alignment" v-model="random[8]" size="sm" placeholder="Player 9" />
             </div>
             <div v-if="players > 9" class="spacing">
-              <b-form-input class="alignment" v-model="random[9]" size="sm" placeholder="Player 10"></b-form-input>
+              <b-form-input v-on:keydown.space.prevent v-on:blur="nominate('r', 9)" class="alignment" v-model="random[9]" size="sm" placeholder="Player 10" />
             </div>
           </div>
         </div>
@@ -278,6 +278,15 @@ export default {
     goToWords () {
       this.$session.set('Teams', { 'white': this.white, 'black': this.black })
       this.$router.push('/words')
+    },
+    nominate (letter, number) {
+      if (letter === 'w') {
+        this.white[number] = this.white[number] === '' ? '' : this.white[number].charAt(0).toUpperCase() + this.white[number].slice(1)
+      } else if (letter === 'b') {
+        this.black[number] = this.black[number] === '' ? '' : this.black[number].charAt(0).toUpperCase() + this.black[number].slice(1)
+      } else {
+        this.random[number] = this.random[number] === '' ? '' : this.random[number].charAt(0).toUpperCase() + this.random[number].slice(1)
+      }
     }
   }
 }
