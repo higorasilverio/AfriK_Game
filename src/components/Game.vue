@@ -81,9 +81,6 @@
     <audio id="endround-audio">
       <source src="../assets/endround.mp3" type="audio/mpeg">
     </audio>
-    <audio id="timeisup-audio">
-      <source src="../assets/timeisup.mp3" type="audio/mpeg">
-    </audio>
     <audio id="won-audio">
       <source src="../assets/won.mp3" type="audio/mpeg">
     </audio>
@@ -141,7 +138,8 @@ export default {
         this.currentTeam = this.currentTeam === 'White' ? 'Black' : 'White'
         this.currentPlayer = this.currentTeam === 'White' ? this.white[0] : this.black[0]
         if (this.roundControl === false) {
-          this.playAudio('alarm')
+          if (!this.nextPlayer) this.playAudio('alarm')
+          else setTimeout(() => { this.playAudio('alarm') }, 1000)
           this.callModal(true)
         } else this.roundControl = false
       } else this.timeControl = true
@@ -175,9 +173,7 @@ export default {
     gotItRight () {
       if (this.gameWords.length > 1) this.playAudio('correct')
       this.nextPlayer = true
-      setTimeout(() => {
-        this.nextPlayer = false
-      }, 3000)
+      setTimeout(() => { this.nextPlayer = false }, 3000)
       this.currentTeam === 'White' ? this.whiteScore++ : this.blackScore++
       let toRemoveIndex = this.gameWords.findIndex(found => found === this.currentWord)
       if (toRemoveIndex > -1) this.gameWords.splice(toRemoveIndex, 1)
@@ -253,7 +249,6 @@ export default {
       if (value === 'correct') document.getElementById('correct-audio').play()
       if (value === 'draw') document.getElementById('draw-audio').play()
       if (value === 'endround') document.getElementById('endround-audio').play()
-      if (value === 'timeisup') document.getElementById('timeisup-audio').play()
       if (value === 'won') document.getElementById('won-audio').play()
       if (value === 'alarm') document.getElementById('alarm-audio').play()
     }
