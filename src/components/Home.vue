@@ -60,10 +60,12 @@ export default {
     }
   },
   mounted () {
+    this.$store.commit('UPDATE_ACTUAL_PAGE', true)
     this.$session.destroy()
   },
   methods: {
     goToPlayers () {
+      this.$store.commit('UPDATE_ACTUAL_PAGE', false)
       this.$router.push('/players')
     }
   }

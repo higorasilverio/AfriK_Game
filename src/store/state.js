@@ -1,5 +1,6 @@
 const state = {
-  timerVerify: true
+  timerVerify: true,
+  actualPage: true
 }
 
 export default state

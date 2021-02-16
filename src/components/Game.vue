@@ -119,6 +119,7 @@ export default {
     }
   },
   mounted: function () {
+    this.$store.commit('UPDATE_ACTUAL_PAGE', false)
     this.white = this.$session.get('Teams').white
     this.black = this.$session.get('Teams').black
     this.gameWords = this.$session.get('Words')
@@ -276,7 +277,7 @@ export default {
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px; 
   min-width: 90%; 
-  min-height: 70vh;
+  min-height: 90vh;
   margin: 0 auto; 
   padding: 3%; 
   -webkit-box-shadow: 5px 5px #CCC; 

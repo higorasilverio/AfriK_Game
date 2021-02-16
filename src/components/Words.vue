@@ -46,6 +46,7 @@ export default {
     }
   },
   mounted () {
+    this.$store.commit('UPDATE_ACTUAL_PAGE', false)
     let blackTeam = this.$session.get('Teams').black
     let whiteTeam = this.$session.get('Teams').white
     this.players = whiteTeam.concat(blackTeam)

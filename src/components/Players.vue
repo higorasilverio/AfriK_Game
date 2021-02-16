@@ -208,6 +208,9 @@ export default {
       }
     }
   },
+  mounted () {
+    this.$store.commit('UPDATE_ACTUAL_PAGE', false)
+  },
   methods: {
     switchConfiguration () {
       this.white = ['', '', '', '', '', '']
