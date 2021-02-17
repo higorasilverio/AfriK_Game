@@ -7,7 +7,7 @@ import Game from '@/components/Game'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -31,3 +31,16 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.name === 'Words' && from.name === 'Game') {
+    var r = confirm('Are you sure you want to leave and lose game data?')
+    if (r === true) {
+      next()
+    } else {
+      next(false)
+    }
+  } else next()
+})
+
+export default router
