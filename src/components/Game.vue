@@ -48,7 +48,7 @@
             </div>
         </div>
         <div class="button-align">
-          <b-button :disabled="nextPlayer" class="main-color" variant="outline-dark" v-on:click="gotItRight">
+          <b-button :disabled="nextPlayer || !wordRevealed" class="main-color" variant="outline-dark" v-on:click="gotItRight">
             Got it right 
             <b-icon icon="check2-all">
           </b-icon></b-button>
@@ -74,10 +74,37 @@
     <b-modal id="modal-round-time" centered hide-footer hide-header no-close-on-backdrop no-close-on-esc>
       <div style="display: flex; flex-direction: column; justify-content: space-evenly; align-items: center;">
         <h2 class="main-color">{{ modalMessageHeader }}</h2>
+        <hr v-if="roundWinner !== ''">
+        <h5 v-if="roundWinner !== ''" class="main-color"> {{ roundWinner }} Team won this round!</h5>
+        <hr>
         <h5 class="main-color" style="margin: 3vh 0 1vh 0;">Now, it is time for the </h5>
         <h3 class="main-color" style="margin: 0;">{{ currentTeam }} Team</h3>
         <h5 class="main-color" style="margin: 1vh 0 3vh 0;">{{ modalMessageFooter }}</h5>
-        <b-button :disabled="disabled" variant="dark" style="margin: 5vh 0 2vh 0;" v-on:click="closeModal">
+        <b-button :disabled="disabled" variant="dark" style="margin: 5vh 0 2vh 0;" v-on:click="closeModal('modal-round-time')">
+          Understood
+        </b-button>
+      </div>
+    </b-modal>
+    <b-modal id="modal-words-played" centered hide-footer hide-header no-close-on-backdrop no-close-on-esc>
+      <div style="display: flex; flex-direction: column; justify-content: space-evenly; align-items: center;">
+        <h2 class="main-color">Words x Teams </h2>
+        <div style="color: #343a40; background-color: #fff; width: 100%; border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius: 10px; -webkit-box-shadow: 2px 2px 10px #CCC; box-shadow: 2px 2px 10px #CCC; margin: 0.5vh 0;">
+          <h4 class="main-color" style="padding: 1vh;">White: </h4>
+          <ul style="margin: 0; padding: 0; width: 100%; max-height: 28vh; display: flex; flex-direction: column; flex-wrap: wrap; align-items: center;">
+            <li v-for="(whitened, whiteIndex) in wordsGot.white" :key="whiteIndex" class="main-color" style="margin: 0; padding: 0;">
+              {{ whitened }}
+            </li>
+          </ul>
+        </div>
+        <div style="color: #fff; background-color: #343a40; width: 100%; border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius: 10px; -webkit-box-shadow: 2px 2px 10px #CCC; box-shadow: 2px 2px 10px #CCC; margin: 0.5vh 0;">
+        <h4 style="padding: 1vh;">Black: </h4>
+          <ul style="margin: 0; padding: 0; width: 100%; max-height: 28vh; display: flex; flex-direction: column; flex-wrap: wrap; align-items: center;">
+            <li v-for="(blackened, blackIndex) in wordsGot.black" :key="blackIndex" style="margin: 0; padding: 0;">
+              {{ blackened }}
+            </li>
+          </ul>
+        </div>
+        <b-button variant="dark" style="margin: 5vh 0 2vh 0;" v-on:click="closeModal('modal-words-played')">
           Understood
         </b-button>
       </div>
@@ -114,6 +141,10 @@ export default {
       round: 1,
       whiteScore: 0,
       blackScore: 0,
+      wordsGot: {
+        white: [],
+        black: []
+      },
       whiteRoundsWon: 0,
       blackRoundsWon: 0,
       currentWord: '',
@@ -123,9 +154,11 @@ export default {
       roundControl: false,
       disabled: true,
       nextPlayer: false,
+      wordRevealed: false,
       champion: '',
       modalMessageHeader: '',
-      modalMessageFooter: ''
+      modalMessageFooter: '',
+      roundWinner: ''
     }
   },
   mounted: function () {
@@ -164,6 +197,7 @@ export default {
       this.show = true
     },
     endHandler () {
+      this.wordRevealed = true
       this.show = false
     },
     randomAllWords () {
@@ -182,20 +216,28 @@ export default {
       return this.gameWords[Math.floor(Math.random() * this.gameWords.length)]
     },
     gotItRight () {
+      this.wordRevealed = false
       if (this.gameWords.length > 1) this.playAudio('correct')
       this.nextPlayer = true
       setTimeout(() => { this.nextPlayer = false }, 3000)
-      this.currentTeam === 'White' ? this.whiteScore++ : this.blackScore++
       let toRemoveIndex = this.gameWords.findIndex(found => found === this.currentWord)
+      this.currentTeam === 'White' ? this.wordsGot.white.push(this.currentWord) : this.wordsGot.black.push(this.currentWord)
       if (toRemoveIndex > -1) this.gameWords.splice(toRemoveIndex, 1)
+      this.currentTeam === 'White' ? this.whiteScore++ : this.blackScore++
       this.checkRoundGame(this.gameWords.length)
       this.currentTeam === 'White' ? this.handleWhitePlayer() : this.handleBlackPlayer()
       this.currentWord = this.pickRandomWord()
     },
     checkRoundGame (length) {
       if (length === 0) {
-        if (this.blackScore > this.whiteScore) this.blackRoundsWon++
-        if (this.blackScore < this.whiteScore) this.whiteRoundsWon++
+        if (this.blackScore > this.whiteScore) {
+          this.blackRoundsWon++
+          this.roundWinner = 'Black'
+        }
+        if (this.blackScore < this.whiteScore) {
+          this.whiteRoundsWon++
+          this.roundWinner = 'White'
+        }
         this.whiteScore = 0
         this.blackScore = 0
         this.roundControl = true
@@ -246,8 +288,12 @@ export default {
       this.$bvModal.show('modal-round-time')
       this.buttonDisable()
     },
-    closeModal () {
-      this.$bvModal.hide('modal-round-time')
+    closeModal (id) {
+      if (id === 'modal-round-time') {
+        this.roundWinner = ''
+        this.$bvModal.hide('modal-round-time')
+        if (this.modalMessageHeader === 'Round is over!') this.$bvModal.show('modal-words-played')
+      } else if (this.modalMessageHeader === 'Round is over!') this.$bvModal.hide('modal-words-played')
       this.buttonDisable()
     },
     buttonDisable () {
@@ -414,7 +460,11 @@ hr {
  width: 50%;
 }
 
-.fingerprint-icon{
+.fingerprint-icon {
   font-size: 3rem;
+}
+
+li {
+  list-style-type: none;
 }
 </style>
