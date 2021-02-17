@@ -11,6 +11,12 @@
       <div v-bind:class="[currentTeam === 'White' ? 'wtclass' : 'btclass' ]">
         <h5>{{ currentTeam }} Team</h5>
         <h5><b-icon icon="person"/> {{ currentPlayer }}</h5>
+        <h5>
+          Round {{ round }}: JUST
+          <span v-if="round === 1">PHRASES</span>
+          <span v-if="round === 2">WORDS</span>
+          <span v-if="round === 3">MIMICS</span>
+        </h5>
       </div>
     </div>
     <div v-else class="background-hold-game">
@@ -23,6 +29,10 @@
         </div>
         <hr>
         <h6>Current player: {{ currentPlayer }}</h6>
+        <hr>
+        <h6 v-if="round === 1">Make a phrase!</h6>
+        <h6 v-if="round === 2">Tell a word!</h6>
+        <h6 v-if="round === 3">Make mimics!</h6>
       </div>
       <div class="current-word">
         <h5 v-if="show" class="main-color">{{ currentWord }}</h5>
@@ -217,6 +227,7 @@ export default {
           this.$bvModal.show('modal-draw-game')
           this.buttonDisable()
         }
+        this.round = 1
       }
     },
     handleWhitePlayer () {
