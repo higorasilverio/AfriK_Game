@@ -88,7 +88,7 @@
     <b-modal id="modal-words-played" centered hide-footer hide-header no-close-on-backdrop no-close-on-esc>
       <div style="display: flex; flex-direction: column; justify-content: space-evenly; align-items: center;">
         <h2 class="main-color">Words x Teams </h2>
-        <div style="color: #343a40; background-color: #fff; width: 100%; border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius: 10px; -webkit-box-shadow: 2px 2px 10px #CCC; box-shadow: 2px 2px 10px #CCC; margin: 0.5vh 0;">
+        <div style="color: #343a40; background-color: #fff; width: 100%; border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius: 10px; -webkit-box-shadow: 2px 2px 10px #CCC; box-shadow: 2px 2px 10px #CCC; margin: 0.5vh 0; padding-bottom: 0.5vh;">
           <h4 class="main-color" style="padding: 1vh;">White: </h4>
           <ul style="margin: 0; padding: 0; width: 100%; max-height: 28vh; display: flex; flex-direction: column; flex-wrap: wrap; align-items: center;">
             <li v-for="(whitened, whiteIndex) in wordsGot.white" :key="whiteIndex" class="main-color" style="margin: 0; padding: 0;">
@@ -96,7 +96,7 @@
             </li>
           </ul>
         </div>
-        <div style="color: #fff; background-color: #343a40; width: 100%; border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius: 10px; -webkit-box-shadow: 2px 2px 10px #CCC; box-shadow: 2px 2px 10px #CCC; margin: 0.5vh 0;">
+        <div style="color: #fff; background-color: #343a40; width: 100%; border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius: 10px; -webkit-box-shadow: 2px 2px 10px #CCC; box-shadow: 2px 2px 10px #CCC; margin: 0.5vh 0; padding-bottom: 0.5vh;">
         <h4 style="padding: 1vh;">Black: </h4>
           <ul style="margin: 0; padding: 0; width: 100%; max-height: 28vh; display: flex; flex-direction: column; flex-wrap: wrap; align-items: center;">
             <li v-for="(blackened, blackIndex) in wordsGot.black" :key="blackIndex" style="margin: 0; padding: 0;">
@@ -177,6 +177,7 @@ export default {
   },
   watch: {
     timer: function () {
+      this.disabled = true
       if (this.timeControl === true) {
         this.timeControl = false
         this.currentTeam = this.currentTeam === 'White' ? 'Black' : 'White'
@@ -230,6 +231,7 @@ export default {
     },
     checkRoundGame (length) {
       if (length === 0) {
+        this.disabled = true
         if (this.blackScore > this.whiteScore) {
           this.blackRoundsWon++
           this.roundWinner = 'Black'
@@ -252,6 +254,7 @@ export default {
         }
       }
       if (this.round === 4) {
+        this.disabled = true
         if (this.blackRoundsWon > this.whiteRoundsWon) {
           this.playAudio('won')
           this.champion = 'Black Team'
@@ -293,7 +296,10 @@ export default {
         this.roundWinner = ''
         this.$bvModal.hide('modal-round-time')
         if (this.modalMessageHeader === 'Round is over!') this.$bvModal.show('modal-words-played')
-      } else if (this.modalMessageHeader === 'Round is over!') this.$bvModal.hide('modal-words-played')
+      } else if (this.modalMessageHeader === 'Round is over!') {
+        this.$bvModal.hide('modal-words-played')
+        this.wordsGot = { white: [], black: [] }
+      }
       this.buttonDisable()
     },
     buttonDisable () {
