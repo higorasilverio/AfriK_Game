@@ -8,16 +8,13 @@
     </div>
     <div class="background-hold-words">
       <div class="spacing">
-        <b-form-input class="alignment" v-model="words[0]" v-on:keypress="lettersOnly(0, $event)" 
-          size="sm" placeholder="Word 1" />
+        <b-form-input class="alignment" v-model="words[0]" v-mask="'HHHHHHHHHHHHHHH'" size="sm" placeholder="Word 1" />
       </div>
       <div class="spacing">
-        <b-form-input class="alignment" v-model="words[1]" v-on:keypress="lettersOnly(1, $event)" 
-          size="sm" placeholder="Word 2" />
+        <b-form-input class="alignment" v-model="words[1]" v-mask="'HHHHHHHHHHHHHHH'" size="sm" placeholder="Word 2" />
       </div>
       <div class="spacing">
-        <b-form-input class="alignment" v-model="words[2]" v-on:keypress="lettersOnly(2, $event)" 
-          size="sm" placeholder="Word 3" />
+        <b-form-input class="alignment" v-model="words[2]" v-mask="'HHHHHHHHHHHHHHH'" size="sm" placeholder="Word 3" />
       </div>
     </div>
     <div class="background-hold">
@@ -81,12 +78,6 @@ export default {
     goToGame () {
       this.$session.set('Words', this.allWords)
       this.$router.push('/game')
-    },
-    lettersOnly (number, event) {
-      let char = String.fromCharCode(event.keyCode)
-      if (/^[A-Za-záéíóúÁÉÍÓÚâêîôûÂÊÎÔÛãõÃÕ]+$/.test(char)) {
-        if (this.words[number].split('').length >= 15) event.preventDefault()
-      } else event.preventDefault()
     }
   }
 

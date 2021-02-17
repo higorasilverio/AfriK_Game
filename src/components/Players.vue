@@ -24,24 +24,19 @@
           <div class="team">WHITE TEAM</div>
           <div class="container-column">
             <div class="spacing">
-              <b-form-input v-on:keypress="nominate('w', 0, $event)"
-                class="alignment" v-model="white[0]" size="sm" placeholder="Player 1" />
+              <b-form-input v-mask="'HHHHHHHHHHHH'" class="alignment" v-model="white[0]" size="sm" placeholder="Player 1" />
             </div>
             <div class="spacing">
-              <b-form-input v-on:keypress="nominate('w', 1, $event)" 
-                class="alignment" v-model="white[1]" size="sm" placeholder="Player 2" />
+              <b-form-input v-mask="'HHHHHHHHHHHH'" class="alignment" v-model="white[1]" size="sm" placeholder="Player 2" />
             </div>
             <div v-if="players > 4" class="spacing">
-              <b-form-input v-on:keypress="nominate('w', 2, $event)" 
-                class="alignment" v-model="white[2]" size="sm" placeholder="Player 3" />
+              <b-form-input v-mask="'HHHHHHHHHHHH'" class="alignment" v-model="white[2]" size="sm" placeholder="Player 3" />
             </div>
             <div v-if="players > 6" class="spacing">
-              <b-form-input v-on:keypress="nominate('w', 3, $event)" 
-                class="alignment" v-model="white[3]" size="sm" placeholder="Player 4" />
+              <b-form-input v-mask="'HHHHHHHHHHHH'" class="alignment" v-model="white[3]" size="sm" placeholder="Player 4" />
             </div>
             <div v-if="players > 8" class="spacing">
-              <b-form-input v-on:keypress="nominate('w', 4, $event)" 
-                class="alignment" v-model="white[4]" size="sm" placeholder="Player 5" />
+              <b-form-input v-mask="'HHHHHHHHHHHH'" class="alignment" v-model="white[4]" size="sm" placeholder="Player 5" />
             </div>
           </div>
         </div>
@@ -49,24 +44,19 @@
           <div class="team">BLACK TEAM</div>
           <div class="container-column">
             <div class="spacing">
-              <b-form-input v-on:keypress="nominate('b', 0, $event)" 
-                class="alignment" v-model="black[0]" size="sm" placeholder="Player 1" />
+              <b-form-input v-mask="'HHHHHHHHHHHH'" class="alignment" v-model="black[0]" size="sm" placeholder="Player 1" />
             </div>
             <div class="spacing">
-              <b-form-input v-on:keypress="nominate('b', 1, $event)" 
-                class="alignment" v-model="black[1]" size="sm" placeholder="Player 2" />
+              <b-form-input v-mask="'HHHHHHHHHHHH'" class="alignment" v-model="black[1]" size="sm" placeholder="Player 2" />
             </div>
             <div v-if="players > 5" class="spacing">
-              <b-form-input v-on:keypress="nominate('b', 2, $event)" 
-                class="alignment" v-model="black[2]" size="sm" placeholder="Player 3" />
+              <b-form-input v-mask="'HHHHHHHHHHHH'" class="alignment" v-model="black[2]" size="sm" placeholder="Player 3" />
             </div>
             <div v-if="players > 7" class="spacing">
-              <b-form-input v-on:keypress="nominate('b', 3, $event)" 
-                class="alignment" v-model="black[3]" size="sm" placeholder="Player 4" />
+              <b-form-input v-mask="'HHHHHHHHHHHH'" class="alignment" v-model="black[3]" size="sm" placeholder="Player 4" />
             </div>
             <div v-if="players > 9" class="spacing">
-              <b-form-input v-on:keypress="nominate('b', 4, $event)" 
-                class="alignment" v-model="black[4]" size="sm" placeholder="Player 5" />
+              <b-form-input v-mask="'HHHHHHHHHHHH'" class="alignment" v-model="black[4]" size="sm" placeholder="Player 5" />
             </div>
           </div>
         </div>
@@ -75,44 +65,34 @@
         <div class="container-row">
           <div class="container-column">
             <div class="spacing">
-              <b-form-input v-on:keypress="nominate('r', 0, $event)" 
-                class="alignment" v-model="random[0]" size="sm" placeholder="Player 1" />
+              <b-form-input v-mask="'HHHHHHHHHHHH'" class="alignment" v-model="random[0]" size="sm" placeholder="Player 1" />
             </div>
             <div class="spacing">
-              <b-form-input v-on:keypress="nominate('r', 1, $event)" 
-                class="alignment" v-model="random[1]" size="sm" placeholder="Player 2" />
+              <b-form-input v-mask="'HHHHHHHHHHHH'" class="alignment" v-model="random[1]" size="sm" placeholder="Player 2" />
             </div>
             <div class="spacing">
-              <b-form-input v-on:keypress="nominate('r', 2, $event)" 
-                class="alignment" v-model="random[2]" size="sm" placeholder="Player 3" />
+              <b-form-input v-mask="'HHHHHHHHHHHH'" class="alignment" v-model="random[2]" size="sm" placeholder="Player 3" />
             </div>
             <div class="spacing">
-              <b-form-input v-on:keypress="nominate('r', 3, $event)" 
-                class="alignment" v-model="random[3]" size="sm" placeholder="Player 4" />
+              <b-form-input v-mask="'HHHHHHHHHHHH'" class="alignment" v-model="random[3]" size="sm" placeholder="Player 4" />
             </div>
             <div v-if="players > 4" class="spacing">
-              <b-form-input v-on:keypress="nominate('r', 4, $event)" 
-                class="alignment" v-model="random[4]" size="sm" placeholder="Player 5" />
+              <b-form-input v-mask="'HHHHHHHHHHHH'" class="alignment" v-model="random[4]" size="sm" placeholder="Player 5" />
             </div>
             <div v-if="players > 5" class="spacing">
-              <b-form-input v-on:keypress="nominate('r', 5, $event)" 
-                class="alignment" v-model="random[5]" size="sm" placeholder="Player 6" />
+              <b-form-input v-mask="'HHHHHHHHHHHH'" class="alignment" v-model="random[5]" size="sm" placeholder="Player 6" />
             </div>
             <div v-if="players > 6" class="spacing">
-              <b-form-input v-on:keypress="nominate('r', 6, $event)" 
-                class="alignment" v-model="random[6]" size="sm" placeholder="Player 7" />
+              <b-form-input v-mask="'HHHHHHHHHHHH'" class="alignment" v-model="random[6]" size="sm" placeholder="Player 7" />
             </div>
             <div v-if="players > 7" class="spacing">
-              <b-form-input v-on:keypress="nominate('r', 7, $event)" 
-                class="alignment" v-model="random[7]" size="sm" placeholder="Player 8" />
+              <b-form-input v-mask="'HHHHHHHHHHHH'" class="alignment" v-model="random[7]" size="sm" placeholder="Player 8" />
             </div>
             <div v-if="players > 8" class="spacing">
-              <b-form-input v-on:keypress="nominate('r', 8, $event)" 
-                class="alignment" v-model="random[8]" size="sm" placeholder="Player 9" />
+              <b-form-input v-mask="'HHHHHHHHHHHH'" class="alignment" v-model="random[8]" size="sm" placeholder="Player 9" />
             </div>
             <div v-if="players > 9" class="spacing">
-              <b-form-input v-on:keypress="nominate('r', 9, $event)" 
-                class="alignment" v-model="random[9]" size="sm" placeholder="Player 10" />
+              <b-form-input v-mask="'HHHHHHHHHHHH'" class="alignment" v-model="random[9]" size="sm" placeholder="Player 10" />
             </div>
           </div>
         </div>
@@ -317,22 +297,6 @@ export default {
     goToWords () {
       this.$session.set('Teams', { 'white': this.white, 'black': this.black })
       this.$router.push('/words')
-    },
-    nominate (letter, number, event) {
-      let char = String.fromCharCode(event.keyCode)
-      if (/^[A-Za-záéíóúÁÉÍÓÚâêîôûÂÊÎÔÛãõÃÕ]+$/.test(char)) {
-        switch (letter) {
-          case 'w':
-            if (this.white[number].split('').length >= 12) event.preventDefault()
-            break
-          case 'b':
-            if (this.black[number].split('').length >= 12) event.preventDefault()
-            break
-          default:
-            if (this.random[number].split('').length >= 12) event.preventDefault()
-            break
-        }
-      } else event.preventDefault()
     }
   }
 }
